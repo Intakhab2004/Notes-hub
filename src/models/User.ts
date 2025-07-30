@@ -5,7 +5,7 @@ export interface User extends Document {
     email: string,
     password: string,
     isVerified: boolean,
-    otp: number,
+    otp: string,
     otpExpiry: Date
 }
 
@@ -35,7 +35,7 @@ const userSchema: Schema<User> = new mongoose.Schema({
     },
 
     otp: {
-        type: Number
+        type: String
     },
 
     otpExpiry: {
