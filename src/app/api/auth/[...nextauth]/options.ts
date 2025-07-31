@@ -3,6 +3,7 @@ import { NextAuthOptions } from "next-auth";
 import dbConnect from "@/lib/dbConnect";
 import userModel from "@/models/User";
 import bcryptjs from "bcryptjs";
+import { signInSchema } from "@/schemas/signinSchema";
 
 export const auhtOptions: NextAuthOptions = {
     providers: [
@@ -20,6 +21,13 @@ export const auhtOptions: NextAuthOptions = {
                 await dbConnect();
 
                 try{
+                    // Zod validation
+                    const result = signInSchema.safeParse({identifier: credentials.identifier, password: credentials.password});
+                    if(!result.success){
+                        throw new Error("Please fill the valid details");
+                    }
+
+
                     const user = await userModel.findOne({
                         $or: [
                             {email: credentials.identifier},

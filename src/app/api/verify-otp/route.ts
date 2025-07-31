@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import userModel from "@/models/User";
+import { verifySchema } from "@/schemas/verifySchema";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -10,10 +11,18 @@ export async function POST(request: NextRequest){
         const reqBody = await request.json();
         const {username, otp} = reqBody;
 
-        // TODO: Zod validation for OTP
+        //Zod validation for OTP
+        const result = verifySchema.safeParse({otp});
+        console.log("Result of zod validation: ", result);
 
-
-
+        if(!result.success){
+            console.log("Zod validation failed!");
+            return NextResponse.json({
+                success: false,
+                status: 401,
+                message: "OTP must be of 6-digits"
+            })
+        }
 
         // Finding user with the username
         const user = await userModel.findOne({username});
