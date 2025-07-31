@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import { sendMail } from "@/lib/mailConfig";
 import userModel from "@/models/User";
+import { signupSchema } from "@/schemas/signupSchema";
 import bcryptjs from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,6 +11,24 @@ export async function POST(request: NextRequest){
     try{
         const reqBody = await request.json();
         const {username, email, password, confirmPassword} = reqBody;
+
+        // Zod validation for signup schema
+        const signupQuerySchema = {  
+        username,
+            email,
+            password,                        // This object for schema validation and zod requires an object in safeParse.
+            confirmPassword
+        }
+
+        const result = signupSchema.safeParse(signupQuerySchema);
+        if(!result.success){
+            console.log("Please fill all the details carefully");
+            return NextResponse.json({
+                success: false,
+                status: 402,
+                message: "Please enter valid details"
+            })
+        }
 
         // Checking password and confirmPassword is same or not
         if(password !== confirmPassword){

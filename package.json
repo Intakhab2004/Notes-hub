@@ -15,7 +15,8 @@
     "next-auth": "^4.24.11",
     "nodemailer": "^6.10.1",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "zod": "^4.0.14"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
