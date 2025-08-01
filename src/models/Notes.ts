@@ -6,6 +6,7 @@ export interface Notes extends Document {
     title: string,
     description: string,
     fileURL: string,
+    filePublicId: string,
     tags: string[],
     subject: string,
     likes: number,
@@ -27,6 +28,10 @@ const notesSchema: Schema<Notes> = new Schema({
     },
 
     fileURL: {
+        type: String,
+    },
+
+    filePublicId: {
         type: String,
     },
 
