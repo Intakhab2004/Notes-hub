@@ -4,7 +4,6 @@ import { Notes } from "./Notes";
 
 export interface Comments extends Document {
     content: string,
-    count: number,
     notesId: mongoose.Types.ObjectId | Notes,
     userId: mongoose.Types.ObjectId | User,
     createdAt: Date
@@ -14,11 +13,6 @@ const commentsSchema: Schema<Comments> = new Schema({
     content: {
         type: String,
         required: [true, "Please make some comments"]
-    },
-
-    count: {
-        type: Number,
-        default: 0
     },
 
     notesId: {
