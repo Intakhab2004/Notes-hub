@@ -20,8 +20,7 @@ export async function GET(request: NextRequest){
         if(!result.success){
             return NextResponse.json({
                 success: false,
-                status: 402,
-                message: "Please enter a valid username"
+                status: 402
             })
         }
 

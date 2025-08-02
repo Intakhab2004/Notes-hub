@@ -8,7 +8,7 @@ import { signInSchema } from "@/schemas/signinSchema";
 export const auhtOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
-            id: "Credentials",
+            id: "credentials",
             name: "Credentials",
 
             credentials: {
