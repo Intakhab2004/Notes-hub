@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/auth-context/authProvider";
 import { ThemeProvider } from "@/components/common/themeProvider";
+import { Toaster } from "@/components/ui/sonner"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
           </ThemeProvider>
+          <Toaster/>
         </body>
       </AuthProvider>
     </html>
