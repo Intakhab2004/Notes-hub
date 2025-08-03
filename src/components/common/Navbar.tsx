@@ -15,7 +15,7 @@ export default function Navbar(){
     const {data: session} = useSession();
 
     return (
-        <nav className="fixed top-0 z-50 w-full bg-white/70 dark:bg-[#151414] border-b backdrop-blur-md shadow-lg">
+        <nav className=" fixed -ml-3 top-0 z-50 w-full bg-white/70 dark:bg-[#151414] border-b backdrop-blur-md shadow-lg">
             <div className="w-11/12 mx-auto py-4 flex justify-between items-center">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold hover:text-blue-700 cursor-pointer transition-all duration-500">
                     NotesHub

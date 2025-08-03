@@ -1,29 +1,76 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/common/Navbar';
-import React from 'react';
 import Link from 'next/link';
+import axios from 'axios';
+import Sidebar from '@/components/common/sidebar';
+interface Note {
+  _id: string;
+  title: string;
+  description: string;
+  subject: string;
+  tags:string[];
+  fileUrl: string;
+}
 
-const Dashboard = () => {
+export default function Dashboard() {
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNotes = async () => {
+      try {
+        const res = await axios.get('/api/user-notes');
+        if (res.data.success) {
+          setNotes(res.data.response);
+        } else {
+          console.error(res.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotes();
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
+    <section className="h-screen px-2 flex flex-col bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
       <Navbar />
 
-      <div className="flex flex-1">
-     
-        <div className="bg-white dark:bg-[#1f1f2e] mt-13 p-4 rounded-lg w-56 shadow-md">
-          <p className="text-black dark:text-white font-bold mb-4 cursor-pointer hover:underline "><Link href='/'>Home</Link></p>
-          <p className="text-black dark:text-white font-bold mb-4 cursor-pointer hover:underline">My Notes</p>
-          <p className="text-black dark:text-white font-bold cursor-pointer hover:underline"><Link href="/upload-notes">Upload Notes</Link></p>
-        </div>
+      <div className="flex flex-1  pt-16 -ml-4 ">
+        <Sidebar/>
+        <main className="flex-1 p-6 text-black dark:text-white ">
+          <h1 className="text-3xl font-semibold mb-6 text-center">📘 My Notes</h1>
 
-        <div className="flex-1 p-6 text-black dark:text-white mt-11  ">
-          <h1 className="text-2xl font-semibold text-center ">Welcome to NotesHub Dashboard</h1>
-         
-        </div>
+          {loading ? (
+            <p className="text-center text-gray-600 dark:text-gray-300">Loading your notes...</p>
+          ) : notes.length === 0 ? (
+            <p className="text-center text-gray-600 dark:text-gray-300">No notes uploaded yet.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {notes.map((note) => (
+                <div key={note._id} className="bg-white dark:bg-[#2c2c3f] p-4 rounded-lg shadow-md">
+                  <h2 className="text-xl font-semibold mb-2">{note.title}</h2>
+                  <p className="text-gray-700 dark:text-gray-300 mb-2">{note.subject}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{note.description}</p>
+                  <a
+                    href={note.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block text-blue-600 hover:underline"
+                  >
+                    View / Download
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+        </main>
       </div>
-    </div>
+    </section>
   );
-};
-
-export default Dashboard;
+}
