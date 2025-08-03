@@ -36,7 +36,6 @@ export default function SigninPage(){
 
     const onSubmit = async(data: z.infer<typeof signInSchema>) => {
         setLoader(true);
-
         try{
             if(!data.identifier || !data.password){
                 const toastId = toast(
@@ -81,6 +80,7 @@ export default function SigninPage(){
             }
 
             if(result?.url){
+                console.log("NEW URL", result.url);
                 router.replace("/dashboard");
             }
         }
