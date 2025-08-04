@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Navbar from '@/components/common/Navbar';
 import Link from 'next/link';
 import axios from 'axios';
-import Sidebar from '@/components/common/sidebar';
+import Sidebar from '@/components/common/Sidebar';
 interface Note {
   _id: string;
   title: string;
@@ -38,7 +38,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <section className="h-screen px-2 flex flex-col bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
+    <section className="h-screen flex flex-col bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
       <Navbar />
 
       <div className="flex flex-1  pt-16 -ml-4 ">

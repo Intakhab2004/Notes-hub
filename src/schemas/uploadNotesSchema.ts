@@ -15,6 +15,7 @@ export const uploadNotesSchema = z.object({
 
     subject: z.string()
                        .min(1, "Subject is required")
-                       .min(2, "Subject must be of atleast 2 characters")
+                       .min(2, "Subject must be of atleast 2 characters"),
                     
+    file: z.any()
 })
