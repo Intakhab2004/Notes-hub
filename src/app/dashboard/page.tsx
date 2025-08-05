@@ -1,76 +1,155 @@
-'use client';
+"use client"
 
-import { useEffect, useState } from 'react';
-import Navbar from '@/components/common/Navbar';
-import Link from 'next/link';
-import axios from 'axios';
-import Sidebar from '@/components/common/Sidebar';
-interface Note {
-  _id: string;
-  title: string;
-  description: string;
-  subject: string;
-  tags:string[];
-  fileUrl: string;
-}
+import DateFormat from "@/components/common/DateFormat";
+import Navbar from "@/components/common/Navbar"
+import Sidebar from "@/components/common/Sidebar"
+import { Notes } from "@/models/Notes";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-export default function Dashboard() {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const res = await axios.get('/api/user-notes');
-        if (res.data.success) {
-          setNotes(res.data.response);
-        } else {
-          console.error(res.data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching notes:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+export default function MyNotes(){
+	const [loader, setLoader] = useState(false);
+	const [notes, setNotes] = useState<Notes[]>([]);
 
-    fetchNotes();
-  }, []);
 
-  return (
-    <section className="h-screen flex flex-col bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
-      <Navbar />
+	useEffect(() => {
+		const getNotes = async() => {
+			setLoader(true);
 
-      <div className="flex flex-1  pt-16 -ml-4 ">
-        <Sidebar/>
-        <main className="flex-1 p-6 text-black dark:text-white ">
-          <h1 className="text-3xl font-semibold mb-6 text-center">📘 My Notes</h1>
+			try{
+				const result = await axios.get("/api/user-notes");
+				if(!result.data.success){
+					console.log("Something went wrong while fetching the data: ", result.data.message);
+					const toastId = toast(
+						"Something went wrong while fetching the data",
+						{
+							description: result.data.message,
+							action: {
+								label: "Dismiss",
+								onClick: () => {
+									toast.dismiss(toastId);
+								}
+							}
+						}
+					)
+				}
 
-          {loading ? (
-            <p className="text-center text-gray-600 dark:text-gray-300">Loading your notes...</p>
-          ) : notes.length === 0 ? (
-            <p className="text-center text-gray-600 dark:text-gray-300">No notes uploaded yet.</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {notes.map((note) => (
-                <div key={note._id} className="bg-white dark:bg-[#2c2c3f] p-4 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold mb-2">{note.title}</h2>
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">{note.subject}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{note.description}</p>
-                  <a
-                    href={note.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block text-blue-600 hover:underline"
-                  >
-                    View / Download
-                  </a>
-                </div>
-              ))}
-            </div>
-          )}
-        </main>
-      </div>
-    </section>
-  );
+				else{
+					setNotes(result.data.response);
+					const toastId = toast(
+						"Success",
+						{
+							description: result.data.message,
+							action: {
+								label: "Dismiss",
+								onClick: () => {
+									toast.dismiss(toastId);
+								}
+							}
+						}
+					)
+				}
+			}
+			catch(error){
+				console.log("Something went wrong: ", error);
+				
+				const toastId = toast(
+					"Internal server error",
+					{
+						description: "Please try again",
+						action: {
+							label: "Dismiss",
+							onClick: () => {
+								toast.dismiss(toastId);
+							}
+						}
+					}
+				)
+			}
+			finally{
+				setLoader(false);
+			}
+		}
+
+		getNotes();
+
+	}, [])
+
+
+	return (
+		<section>
+			<Navbar/>
+			<div className="min-h-screen flex flex-1 pt-17 overflow-y-auto">
+				<Sidebar/>
+
+				{/* main container */}
+				<div className="min-h-full w-full flex flex-col items-center p-2 md:pr-25 bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
+					<h1 className="text-2xl md:text-3xl lg:text-3xl font-bold pt-10 md:pr-15">
+						Your Uploaded Notes
+					</h1>
+
+					{/* Notes container */}
+					<div className="w-full max-w-4xl p-5 md:p-8 my-10 space-y-8 bg-white rounded-lg shadow-md dark:bg-[#1b1b31] dark:shadow-gray-500">
+						{
+							loader ? (
+										<div className="flex gap-3 items-center text-xl font-semibold">
+											Please wait <Loader2 className="w-8 h-8 animate-spin" />
+										</div>
+									)
+									:
+									notes.length <= 0 ? (
+															<div className="w-full flex flex-col items-center ">
+																<h2 className="text-xl font-semibold text-black/90 dark:text-white/90">
+																	You have not upload any notes yet
+																</h2>
+																<p className="font-semibold text-black/60 dark:text-white/60">
+																	Learn Together. Grow Together.
+																</p>
+															</div>
+														)
+														:
+														(
+															<div className="flex flex-col gap-6">
+																{
+																	notes.map((note, index) => (
+																		<Link
+																			href={""}
+																			key={index}
+																			className="flex flex-col bg-gray-200 dark:bg-gray-800 shadow-lg shadow-gray-400 
+																				dark:shadow-white/10 px-7 py-4 rounded-md border-none hover:shadow-none hover:scale-105 hover:border-1 
+																				hover:border-black/70 dark:hover:border-white/60 transition-all duration-300"
+																		>
+																			<h1 className="text-xl font-bold">
+																				{note.title}
+																			</h1>
+																			<div className="flex justify-between">
+																				<p>
+																					Subject: <span className="font-light italic">{note.subject}</span>
+																				</p>
+																				<div className="flex gap-4">
+																					<p>
+																						❤ {note.likes}
+																					</p>
+																					<p>
+																						💬 {note.comments.length}
+																					</p>
+																				</div>
+																			</div>
+																			<DateFormat rawDate={note.createdAt} />
+																		</Link>
+																	))
+																}
+															</div>
+														)
+									
+						}
+					</div>
+				</div>
+			</div>
+		</section>
+	)
 }

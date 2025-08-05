@@ -21,7 +21,6 @@ export async function GET(request: NextRequest){
     try{
         const userId = session.user._id;
         const response = await notesModel.find({uploadedBy: userId});
-        console.log("hello jii",response)
 
         if(!response){
             console.log("Something went wrong while getting the user specific notes");

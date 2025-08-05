@@ -97,7 +97,7 @@ const UploadNotes = () => {
 		}
 		catch(error: unknown){
 			if(error instanceof Error){
-                console.log("Something went wrong while signup: ", error.message);
+                console.log("Something went wrong: ", error.message);
             }
             else{
                 console.log("An unknown error: ", error);
