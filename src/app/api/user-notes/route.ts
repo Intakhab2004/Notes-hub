@@ -8,7 +8,7 @@ import notesModel from "@/models/Notes";
 export async function GET(request: NextRequest){
     const session = await getServerSession(auhtOptions);
     if(!session || !session.user){
-        console.log("User not loogged in");
+        console.log("User not logged in");
         return NextResponse.json({
             success: false,
             status: 402,
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest){
     catch(error: unknown){
         console.log("Something went wrong");
         if(error instanceof Error){
-            console.log("An error occured: ", error.message);
+            console.log("An error occurred: ", error.message);
         }
         else{
             console.log("An unknown error: ", error);
