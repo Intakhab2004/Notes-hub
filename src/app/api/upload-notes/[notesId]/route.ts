@@ -7,12 +7,12 @@ import commentsModel from "@/models/Comments";
 import cloudinary from "@/lib/cloudinaryConfig";
 
 
-export async function GET(request: NextRequest, {params}: {params: {notesId: string}}){
+export async function GET(request: NextRequest, context: {params: Promise<{notesId: string}>}){
     await dbConnect();
 
     try{
-        const id = params.notesId;
-        const noteDetails = await notesModel.findOne({_id: id})
+        const {notesId} = await context.params;
+        const noteDetails = await notesModel.findOne({_id: notesId})
                                                                 .populate({
                                                                     path: "uploadedBy",
                                                                     select: "username"

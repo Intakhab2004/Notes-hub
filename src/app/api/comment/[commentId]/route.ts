@@ -7,7 +7,7 @@ import notesModel from "@/models/Notes";
 
 
 //Deleting comment
-export async function DELETE(request: NextRequest, {params}: {params: {commentId: string}}){
+export async function DELETE(request: NextRequest, context: {params: Promise<{commentId: string}>}){
     const session = await getServerSession(auhtOptions);
     if(!session || !session.user){
         return NextResponse.json({
@@ -20,11 +20,11 @@ export async function DELETE(request: NextRequest, {params}: {params: {commentId
     await dbConnect();
 
     try{
-        const id = params.commentId;
+        const {commentId} = await context.params;
         const {notesId} = await request.json();
 
         //Finding the comment to delete
-        const comment = await commentsModel.findOne({_id: id});
+        const comment = await commentsModel.findOne({_id: commentId});
         if(!comment){
             console.log("Comment does not exists with this id");
             return NextResponse.json({
@@ -47,7 +47,7 @@ export async function DELETE(request: NextRequest, {params}: {params: {commentId
         //Deleting comment from notes model
         const updatedNotes = await notesModel.findByIdAndUpdate(
             notesId,
-            {$pull: {comments: id}},
+            {$pull: {comments: commentId}},
             {new: true}
         );
         if(!updatedNotes){
@@ -59,7 +59,7 @@ export async function DELETE(request: NextRequest, {params}: {params: {commentId
         }
 
         //Deleting comment form DB
-        const deletedComment = await commentsModel.findByIdAndDelete(id);
+        const deletedComment = await commentsModel.findByIdAndDelete(commentId);
         if(!deletedComment){
             return NextResponse.json({
                 success: false,
@@ -95,7 +95,7 @@ export async function DELETE(request: NextRequest, {params}: {params: {commentId
 
 
 //Updating the comment
-export async function PUT(request: NextRequest, {params}: {params: {commentId: string}}){
+export async function PUT(request: NextRequest, context: {params: Promise<{commentId: string}>}){
     const session = await getServerSession(auhtOptions);
     if(!session || !session.user){
         return NextResponse.json({
@@ -107,11 +107,11 @@ export async function PUT(request: NextRequest, {params}: {params: {commentId: s
 
     await dbConnect();
     try{
-        const id = params.commentId;
+        const commentId = await context.params;
         const {newComment} = await request.json();
 
         //Finding the comment to edit
-        const comment = await commentsModel.findOne({_id: id});
+        const comment = await commentsModel.findOne({_id: commentId});
         if(!comment){
             console.log("Comment does not exists with this id");
             return NextResponse.json({
@@ -133,7 +133,7 @@ export async function PUT(request: NextRequest, {params}: {params: {commentId: s
 
         //Editing the comment models
         const updatedComment = await commentsModel.findByIdAndUpdate(
-            id,
+            commentId,
             {$set: {content: newComment}},
             {new: true}
         )
