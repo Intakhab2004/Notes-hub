@@ -49,10 +49,15 @@ export async function POST(request: NextRequest){
         const newComment = new commentsModel({
             content,
             notesId: new mongoose.Types.ObjectId(notesId),
-            // userId: new mongoose.Types.ObjectId(session.user._id)
+            userId: new mongoose.Types.ObjectId(session.user._id)
         })
 
         await newComment.save();
+
+        await newComment.populate({
+            path: "userId",
+            select: "username"
+        })
 
         //creating entry in the notes model
         const updatedNotes = await notesModel.findByIdAndUpdate(
@@ -66,7 +71,8 @@ export async function POST(request: NextRequest){
         return NextResponse.json({
             success: true,
             status: 200,
-            message: "You commented on a post"
+            message: "You commented on a post",
+            newComment
         })
     }
 

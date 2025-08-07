@@ -33,7 +33,7 @@ export default function PdfViewer({fileUrl}: {fileUrl: string}){
                     />
                 </Worker>
             </div>
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 shadow-sm text-sm text-gray-900 dark:text-gray-200">
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-500 shadow-sm text-sm text-gray-900 dark:text-gray-200">
                 <ZoomOutButton />
                 <ZoomInButton />
                 <GoToPreviousPage />

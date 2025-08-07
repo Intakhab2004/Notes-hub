@@ -13,9 +13,12 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react"
 import { toast } from "sonner";
 import { User } from "@/models/User";
+import CommentBox from "@/components/common/CommentSection";
+import { Comments } from "@/models/Comments";
 
 
 export default function NotesPage(){
+    const [showComments, setShowComments] = useState(false);
     const [loader, setLoader] = useState(true);
     const [noteDetails, setNoteDetails] = useState<Notes | null>(null);
     const params = useParams();
@@ -132,7 +135,7 @@ export default function NotesPage(){
 
                                         {/* Note details container */}
                                         <div className="col-span-1 lg:col-span-5">
-                                            <div className="w-full bg-gray-100 dark:bg-gray-900 px-4">
+                                            <div className="w-full bg-gray-100 dark:bg-transparent px-4">
                                                 <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-all duration-300">
                                                     <div className="px-6 py-6 flex flex-col gap-4">
                                                         <h1 className="text-2xl font-bold text-gray-800 dark:text-white italic">
@@ -197,16 +200,28 @@ export default function NotesPage(){
                                                         </div>
                                                     </div>
 
-                                                     <div className="flex items-center text-lg justify-around py-4 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-                                                        <button className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">
+                                                    <div className="flex items-center text-lg justify-around py-4 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                                        <button className="flex items-center gap-2 text-red-600 hover:scale-110 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 cursor-pointer transition-all duration-300">
                                                             <FcLike /> <span className="font-medium">32</span>
                                                         </button>
 
-                                                        <button className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                                                            <FaComment /> <span className="font-medium">10</span>
+                                                        <button
+                                                            onClick={() => setShowComments(!showComments)}
+                                                            className="flex items-center gap-2 text-blue-600 hover:scale-110 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer transition-all duration-300"
+                                                        >
+                                                            <FaComment /> <span className="font-medium">{noteDetails.comments.length}</span>
                                                         </button>
                                                     </div>
                                                 </div>
+                                                {
+                                                    showComments && (
+                                                        <CommentBox
+                                                            noteId={noteDetails._id as string}
+                                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                            comments={noteDetails.comments as any}
+                                                        />
+                                                    )
+                                                }
                                             </div>
                                         </div>
                                     </div>
