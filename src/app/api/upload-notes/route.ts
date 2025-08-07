@@ -129,10 +129,6 @@ export async function GET(){
                                                         path: "uploadedBy",
                                                         select: "username"
                                                    })
-                                                   .populate({
-                                                        path: "comments",
-                                                        select: "count"
-                                                   });
         if(!notesResult){
             return NextResponse.json({
                 success: false,

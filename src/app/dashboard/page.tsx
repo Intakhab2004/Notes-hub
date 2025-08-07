@@ -39,19 +39,8 @@ export default function MyNotes(){
 				}
 
 				else{
+					console.log("Notes Fetched successfully");
 					setNotes(result.data.response);
-					const toastId = toast(
-						"Success",
-						{
-							description: result.data.message,
-							action: {
-								label: "Dismiss",
-								onClick: () => {
-									toast.dismiss(toastId);
-								}
-							}
-						}
-					)
 				}
 			}
 			catch(error){
@@ -117,7 +106,7 @@ export default function MyNotes(){
 																{
 																	notes.map((note, index) => (
 																		<Link
-																			href={""}
+																			href={`/notes/${note._id}`}
 																			key={index}
 																			className="flex flex-col bg-gray-200 dark:bg-gray-800 shadow-lg shadow-gray-400 
 																				dark:shadow-white/10 px-7 py-4 rounded-md border-none hover:shadow-none hover:scale-105 hover:border-1 
