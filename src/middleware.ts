@@ -24,6 +24,7 @@ export const config = {
         "/sign-up",
         "/sign-in",
         "/verify/:path*",
-        "/dashboard"
+        "/dashboard",
+        "/upload-notes"
     ]
 }

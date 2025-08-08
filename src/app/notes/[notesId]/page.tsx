@@ -14,7 +14,6 @@ import { useEffect, useState } from "react"
 import { toast } from "sonner";
 import { User } from "@/models/User";
 import CommentBox from "@/components/common/CommentSection";
-import { Comments } from "@/models/Comments";
 
 
 export default function NotesPage(){
@@ -219,6 +218,7 @@ export default function NotesPage(){
                                                             noteId={noteDetails._id as string}
                                                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                             comments={noteDetails.comments as any}
+                                                            username={(noteDetails.uploadedBy as User).username}
                                                         />
                                                     )
                                                 }

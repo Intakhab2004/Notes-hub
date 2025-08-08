@@ -9,10 +9,12 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { FaComment } from "react-icons/fa";
+import { FcLike } from "react-icons/fc";
 
 
 export default function MyNotes(){
-	const [loader, setLoader] = useState(false);
+	const [loader, setLoader] = useState(true);
 	const [notes, setNotes] = useState<Notes[]>([]);
 
 
@@ -120,12 +122,12 @@ export default function MyNotes(){
 																					Subject: <span className="font-light italic">{note.subject}</span>
 																				</p>
 																				<div className="flex gap-4">
-																					<p>
-																						❤ {note.likes}
-																					</p>
-																					<p>
-																						💬 {note.comments.length}
-																					</p>
+																					<div className="flex gap-1 items-center">
+																						<FcLike /> {note.likes}
+																					</div>
+																					<div className="flex gap-1 items-center">
+																						<FaComment /> {note.comments.length}
+																					</div>
 																				</div>
 																			</div>
 																			<DateFormat rawDate={note.createdAt} />

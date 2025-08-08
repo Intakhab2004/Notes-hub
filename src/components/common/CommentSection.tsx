@@ -19,11 +19,12 @@ import DateFormat from "./DateFormat";
 interface CommentBoxProps {
     noteId: string;
     comments: Comments[];
+    username: string
 }
 
 const COMMENTS_PER_PAGE = 5;
 
-export default function CommentBox({ noteId, comments }: CommentBoxProps) {
+export default function CommentBox({ noteId, comments, username }: CommentBoxProps) {
     const { data: session } = useSession();
 
     const [loader, setLoader] = useState(false);
@@ -159,8 +160,8 @@ export default function CommentBox({ noteId, comments }: CommentBoxProps) {
                                 key={comment._id as string} 
                                 className="border-1 border-gray-200 dark:border-gray-700 py-2 px-3 rounded-sm shadow-lg"
                             >
-                                <div className="text-sm font-medium text-gray-800 dark:text-white">
-                                    {(comment.userId as User)?.username ?? "Unknown user"}
+                                <div className="text-sm font-medium text-gray-800 dark:text-white italic">
+                                    By: {(comment.userId as User)?.username === username ? "me" : (comment.userId as User)?.username}
                                 </div>
 
                                 <div className="text-sm text-gray-700 dark:text-gray-300">

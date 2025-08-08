@@ -4,6 +4,7 @@ import "./globals.css";
 import AuthProvider from "@/auth-context/authProvider";
 import { ThemeProvider } from "@/components/common/themeProvider";
 import { Toaster } from "@/components/ui/sonner"
+import AppMountWrapper from "@/components/common/AppMountWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,9 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
       <AuthProvider>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            {children}
+            <AppMountWrapper>
+              {children}
+            </AppMountWrapper>
           </ThemeProvider>
           <Toaster/>
         </body>

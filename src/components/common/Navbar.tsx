@@ -1,10 +1,12 @@
 "use client"
 
-import { Menu, Sun } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
+import { DropdownMenuButtonDesktop } from "./DropdownMenu";
+import { DropdownMenuButtonMobile } from "./DropdownMenu";
+
 
 
 const navLinks = ["Home", "About", "Contact Us"];
@@ -38,30 +40,30 @@ export default function Navbar(){
                     }
                 </div>
 
-                <div className="flex gap-3 md:gap-5 items-center">
-                    <div className={`font-semibold border-1 rounded-md py-1 px-4 hover:scale-105 transition-all duration-300 ${session ? "border-red-400 bg-gradient-to-r from-red-300 to-pink-100 shadow-md dark:text-black" : "border-gray-400 text-black/90 bg-gradient-to-r from-blue-300 via-indigo-200 to-gray-100 shadow-sm shadow-blue-400"}`}>
-                        {
-                            !session ? (
+                <div className="flex gap-3 md:gap-4 items-center">
+                    {
+                        !session ? (
+                                    <button className="font-semibold border-1 rounded-md py-1 px-4 hover:scale-105 transition-all duration-300 border-gray-400 text-black/90 bg-gradient-to-r from-blue-300 via-indigo-200 to-gray-100 shadow-sm shadow-blue-400">
                                         <Link href="/sign-up">
                                             Sign up
                                         </Link>
-                                      ) 
-                                      : 
-                                      (
-                                        <button onClick={() => signOut({callbackUrl: "/"})} className="cursor-pointer">
-                                            Logout
-                                        </button>
-                                      )
-                        }
-                    </div>
-                    <div>
+                                    </button>
+                                    ) 
+                                    : 
+                                    (
+                                        <div className="hidden md:flex">
+                                            <DropdownMenuButtonDesktop />
+                                        </div>
+                                    )
+                    }
+                    <div className="hidden md:flex">
                         <ThemeToggle/>
                     </div>
                 </div>
 
-                <div className="hidden">
-                    mode toggle for mobile
-                    <Menu/>
+                <div className="flex justify-center items-center gap-3 md:hidden">
+                    <DropdownMenuButtonMobile />
+                    <ThemeToggle />
                 </div>
             </div>
         </nav>
