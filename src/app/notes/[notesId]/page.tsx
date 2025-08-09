@@ -14,6 +14,7 @@ import { useEffect, useState } from "react"
 import { toast } from "sonner";
 import { User } from "@/models/User";
 import CommentBox from "@/components/common/CommentSection";
+import Footer from "@/components/common/Footer";
 
 
 export default function NotesPage(){
@@ -231,6 +232,7 @@ export default function NotesPage(){
                    }
                 </div>
             </div>
+            <Footer />
         </section>
     )
 }

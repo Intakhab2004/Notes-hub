@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { FaComment } from "react-icons/fa";
 import { FcLike } from "react-icons/fc";
+import Footer from "@/components/common/Footer";
 
 
 export default function MyNotes(){
@@ -84,7 +85,7 @@ export default function MyNotes(){
 					</h1>
 
 					{/* Notes container */}
-					<div className="w-full max-w-4xl p-5 md:p-8 my-10 space-y-8 bg-white rounded-lg shadow-md dark:bg-[#1b1b31] dark:shadow-gray-500">
+					<div className="w-full max-w-4xl p-5 md:p-8 my-10 mb-30 space-y-8 bg-white rounded-lg shadow-md dark:bg-[#1b1b31] dark:shadow-gray-500">
 						{
 							loader ? (
 										<div className="flex gap-3 items-center text-xl font-semibold">
@@ -141,6 +142,7 @@ export default function MyNotes(){
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</section>
 	)
 }

@@ -1,4 +1,5 @@
 'use client'
+import Footer from '@/components/common/Footer'
 import Navbar from '@/components/common/Navbar'
 import Sidebar from '@/components/common/Sidebar'
 import TagsInput from '@/components/common/TagsInput'
@@ -134,7 +135,7 @@ const UploadNotes = () => {
 					</h1>
 
 					{/* Notes upload form */}
-					<div className="w-full max-w-2xl p-5 md:p-8 my-12 space-y-8 bg-white rounded-lg shadow-md dark:bg-[#1b1b31] dark:shadow-gray-500">
+					<div className="w-full max-w-2xl p-5 md:p-8 my-12 mb-30 space-y-8 bg-white rounded-lg shadow-md dark:bg-[#1b1b31] dark:shadow-gray-500">
 						<Form {...form}>
 							<form onSubmit={form.handleSubmit(submitHandler)} className="space-y-6">
 								<FormField
@@ -316,6 +317,7 @@ const UploadNotes = () => {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</section>
 	)
 }
