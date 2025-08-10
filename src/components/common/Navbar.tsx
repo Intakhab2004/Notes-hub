@@ -9,7 +9,7 @@ import { DropdownMenuButtonMobile } from "./DropdownMenu";
 
 
 
-const navLinks = ["Home", "About", "Contact Us"];
+const navLinks = ["Home", "Notes", "About", "Contact Us"];
 
 
 export default function Navbar(){
@@ -26,7 +26,7 @@ export default function Navbar(){
                 <div className="hidden md:flex gap-7 items-center text-md font-bold">
                     {
                         navLinks.map((link, index) => {
-                            const href = link === "Home" ? "/" : `/${link.toLowerCase()}`
+                            const href = link === "Home" ? "/" : link === "Notes" ? "/notes-collections" : `/${link.toLowerCase()}`
                             const activeLink = pathName === href;
                             return (
                                 <Link 
@@ -43,7 +43,7 @@ export default function Navbar(){
                 <div className="flex gap-3 md:gap-4 items-center">
                     {
                         !session ? (
-                                    <button className="font-semibold border-1 rounded-md py-1 px-4 hover:scale-105 transition-all duration-300 border-gray-400 text-black/90 bg-gradient-to-r from-blue-300 via-indigo-200 to-gray-100 shadow-sm shadow-blue-400">
+                                    <button className="hidden md:flex font-semibold border-1 rounded-md py-1 px-4 hover:scale-105 transition-all duration-300 border-gray-400 text-black/90 bg-gradient-to-r from-blue-300 via-indigo-200 to-gray-100 shadow-sm shadow-blue-400">
                                         <Link href="/sign-up">
                                             Sign up
                                         </Link>

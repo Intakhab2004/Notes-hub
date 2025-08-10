@@ -94,10 +94,14 @@ export default function Home(){
 							Elevate your skills, solve problems, and unlock the world of learning possibilities.
 						</p>
 						<div className="flex items-center justify-center md:justify-start gap-4 flex-wrap">
-							<button className="px-5 py-3 text-xl font-semibold border text-white bg-indigo-400 hover:bg-indigo-500 border-gray-600 dark:border-white/50 rounded-4xl transition-all duration-300">
+							<button 
+								onClick={() => router.push("/notes-collections")}
+								className="px-5 py-3 text-xl font-semibold border text-white bg-indigo-400 hover:bg-indigo-500 border-gray-600 dark:border-white/50 rounded-4xl transition-all duration-300">
 								View Notes
 							</button>
-							<button className="flex gap-3 items-center px-5 py-3 text-xl font-semibold border-1 text-white bg-black/80 hover:bg-black/90 border-red-600 dark:border-white/50 rounded-4xl">
+							<button
+								onClick={() => session ? router.push("/upload-notes") : router.push("/sign-in")}
+								className="flex gap-3 items-center px-5 py-3 text-xl font-semibold border-1 text-white bg-black/80 hover:bg-black/90 border-red-600 dark:border-white/50 rounded-4xl">
 								Collab
 								<ArrowBigRight className="text-red-500" />
 							</button>
