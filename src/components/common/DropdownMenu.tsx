@@ -68,21 +68,38 @@ export function DropdownMenuButtonMobile() {
                             Home
                         </Link>
                     </DropdownMenuItem>
+                    {
+                        session && (
+                            <DropdownMenuItem>
+                                <Link href="/dashboard" className="w-full font-bold border-1 rounded-md py-1 px-4 text-center border-gray-400 bg-gray-300 dark:border-gray-700 dark:bg-gray-900">
+                                    Dashboard
+                                </Link>
+                            </DropdownMenuItem>
+                        )
+                    }
                     <DropdownMenuItem>
-                        <Link href="/dashboard" className="w-full font-bold border-1 rounded-md py-1 px-4 text-center border-gray-400 bg-gray-300 dark:border-gray-700 dark:bg-gray-900">
-                            Dashboard
+                        <Link href="/notes-collections" className="w-full font-bold border-1 rounded-md py-1 px-4 text-center border-gray-400 bg-gray-300 dark:border-gray-700 dark:bg-gray-900">
+                            Notes
                         </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Link href="/dashboard" className="w-full font-bold border-1 rounded-md py-1 px-4 text-center border-gray-400 bg-gray-300 dark:border-gray-700 dark:bg-gray-900">
-                            My Notes
-                        </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Link href="/upload-notes" className="w-full font-bold border-1 rounded-md py-1 px-4 text-center border-gray-400 bg-gray-300 dark:border-gray-700 dark:bg-gray-900">
-                            Upload Notes
-                        </Link>
-                    </DropdownMenuItem>
+                    {
+                        session && (
+                            <DropdownMenuItem>
+                                <Link href="/dashboard" className="w-full font-bold border-1 rounded-md py-1 px-4 text-center border-gray-400 bg-gray-300 dark:border-gray-700 dark:bg-gray-900">
+                                    My Notes
+                                </Link>
+                            </DropdownMenuItem>
+                        )
+                    }
+                    {
+                        session && (
+                            <DropdownMenuItem>
+                                <Link href="/upload-notes" className="w-full font-bold border-1 rounded-md py-1 px-4 text-center border-gray-400 bg-gray-300 dark:border-gray-700 dark:bg-gray-900">
+                                    Upload Notes
+                                </Link>
+                            </DropdownMenuItem>
+                        )
+                    }
                     <DropdownMenuSeparator />
 
                     <DropdownMenuItem>
