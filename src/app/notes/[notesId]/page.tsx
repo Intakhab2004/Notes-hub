@@ -9,6 +9,7 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { FaComment } from "react-icons/fa";
 import { FcLike } from "react-icons/fc";
+import { FcLikePlaceholder } from "react-icons/fc";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import { toast } from "sonner";
@@ -20,10 +21,13 @@ import { useSession } from "next-auth/react";
 
 
 export default function NotesPage(){
-    const [showComments, setShowComments] = useState(false);
     const [loader, setLoader] = useState(true);
+    const [showComments, setShowComments] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [totalLikes, setTotalLikes] = useState(0);
     const [deleteLoader, setDeleteLoader] = useState(false);
     const [noteDetails, setNoteDetails] = useState<Notes | null>(null);
+
     const params = useParams();
     const {data: session} = useSession();
     const router = useRouter();
@@ -55,6 +59,13 @@ export default function NotesPage(){
 
                 else{
                     console.log("Notes fetched successfully: ", result.data.message);
+
+                    //Setting isLiked value
+                    const note = result.data.noteDetails;
+                    const likes = note.likes || [];
+                    setIsLiked(session?.user?._id ? likes.includes(session.user._id) : false);
+
+                    setTotalLikes(likes.length);
                     setNoteDetails(result.data.noteDetails);
                 }
             }
@@ -140,6 +151,75 @@ export default function NotesPage(){
         }
         finally{
             setDeleteLoader(false);
+        }
+    }
+
+    const likeHandler = async() => {
+        try{
+            if(!session || !session.user){
+                console.log("You are not logged in");
+				
+				const toastId = toast(
+					"Failed",
+					{
+						description: "You must be logged in to like the post",
+						action: {
+							label: "Dismiss",
+							onClick: () => {
+								toast.dismiss(toastId);
+							}
+						}
+					}
+				)
+                return ;
+            }
+
+            const prevLiked = isLiked;
+            const prevCount = totalLikes;
+
+            setIsLiked(!prevLiked);
+            setTotalLikes(prevLiked ? prevCount - 1 : prevCount + 1);
+
+            const result = await axios.post(`/api/upload-notes/${noteId}/likes`, {userId: session.user._id});
+            if(!result.data.success){
+                console.log("Something went wrong: ", result.data.message);
+
+                setIsLiked(prevLiked);
+                setTotalLikes(prevCount);
+
+                const toastId = toast(
+					"Something went wrong",
+					{
+						description: result.data.message,
+						action: {
+							label: "Dismiss",
+							onClick: () => {
+								toast.dismiss(toastId);
+							}
+						}
+					}
+				)
+            }
+
+            else{
+                const toastId = toast(
+					"Success",
+					{
+						description: result.data.liked ? "You liked the post" : "You unliked the post",
+						action: {
+							label: "Dismiss",
+							onClick: () => {
+								toast.dismiss(toastId);
+							}
+						}
+					}
+				)
+            }
+
+            
+        }
+        catch(error){
+
         }
     }
 
@@ -264,8 +344,12 @@ export default function NotesPage(){
                                                     </div>
 
                                                     <div className="flex items-center text-lg justify-around py-4 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-                                                        <button className="flex items-center gap-2 text-red-600 hover:scale-110 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 cursor-pointer transition-all duration-300">
-                                                            <FcLike /> <span className="font-medium">32</span>
+                                                        <button
+                                                            onClick={likeHandler}
+                                                            className={`flex items-center gap-2 ${isLiked ? "text-red-600" : "text-red-200"} hover:scale-110 hover:text-red-700 dark:hover:text-red-300 cursor-pointer transition-all duration-300`}
+                                                        >
+                                                            {isLiked ? <FcLike /> : <FcLikePlaceholder />}
+                                                            <span className="font-medium">{totalLikes}</span>
                                                         </button>
 
                                                         <button
@@ -287,7 +371,7 @@ export default function NotesPage(){
                                                     )
                                                 }
                                                 {
-                                                    session && (
+                                                    (session && String(noteDetails.uploadedBy) === session.user._id) && (
                                                         <button
                                                             onClick={deleteHandler}
                                                             className="mt-6 px-5 py-2 text-base text-black/90 font-semibold rounded-md border 

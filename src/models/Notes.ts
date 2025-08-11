@@ -9,7 +9,7 @@ export interface Notes extends Document {
     filePublicId: string,
     tags: string[],
     subject: string,
-    likes: number,
+    likes: mongoose.Types.ObjectId[] | User[],
     comments: mongoose.Types.ObjectId[] | Comments[],
     uploadedBy: mongoose.Types.ObjectId | User,
     createdAt: Date
@@ -45,10 +45,10 @@ const notesSchema: Schema<Notes> = new Schema({
         required: true
     },
 
-    likes: {
-        type: Number,
-        default: 0
-    },
+    likes: [{
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+    }],
 
     comments: [{
         type: mongoose.Types.ObjectId,

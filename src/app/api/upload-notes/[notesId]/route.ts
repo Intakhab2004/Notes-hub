@@ -57,7 +57,7 @@ export async function GET(request: NextRequest, context: {params: Promise<{notes
 }
 
 
-export async function DELETE(request: NextRequest, {params}: {params: {notesId: string}}){
+export async function DELETE(request: NextRequest, context: {params: Promise<{notesId: string}>}){
 
     const session = await getServerSession(auhtOptions);
     if(!session || !session.user){
@@ -73,10 +73,10 @@ export async function DELETE(request: NextRequest, {params}: {params: {notesId: 
     await dbConnect();
 
     try{
-        const id = params.notesId;
+        const {notesId} = await context.params;
 
         // Finding the note with the id
-        const note = await notesModel.findById(id);
+        const note = await notesModel.findById(notesId);
         if(!note){
             return NextResponse.json({
                 success: false,
@@ -107,7 +107,7 @@ export async function DELETE(request: NextRequest, {params}: {params: {notesId: 
         }
 
         // deleting the note itself
-        const deleteResult = await notesModel.findByIdAndDelete(id);
+        const deleteResult = await notesModel.findByIdAndDelete(notesId);
         if(!deleteResult){
             return NextResponse.json({
                 success: false,
@@ -129,7 +129,7 @@ export async function DELETE(request: NextRequest, {params}: {params: {notesId: 
             console.log("An error occured: ", error.message);
         }
         else{
-            console.log("An inknown error: ", error);
+            console.log("An unknown error: ", error);
         }
         
         return NextResponse.json({
