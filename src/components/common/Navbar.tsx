@@ -9,7 +9,7 @@ import { DropdownMenuButtonMobile } from "./DropdownMenu";
 
 
 
-const navLinks = ["Home", "Notes", "About", "Contact Us"];
+const navLinks = ["Home", "Notes", "About", "Contact"];
 
 
 export default function Navbar(){

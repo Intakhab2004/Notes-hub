@@ -9,19 +9,24 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { FaComment } from "react-icons/fa";
 import { FcLike } from "react-icons/fc";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import { toast } from "sonner";
 import { User } from "@/models/User";
 import CommentBox from "@/components/common/CommentSection";
 import Footer from "@/components/common/Footer";
+import { useSession } from "next-auth/react";
+
 
 
 export default function NotesPage(){
     const [showComments, setShowComments] = useState(false);
     const [loader, setLoader] = useState(true);
+    const [deleteLoader, setDeleteLoader] = useState(false);
     const [noteDetails, setNoteDetails] = useState<Notes | null>(null);
     const params = useParams();
+    const {data: session} = useSession();
+    const router = useRouter();
 
     const noteId = params?.notesId;
 
@@ -78,7 +83,65 @@ export default function NotesPage(){
 
     }, [])
 
+    const deleteHandler = async() => {
+        setDeleteLoader(true);
 
+        try{
+            const result = await axios.delete(`/api/upload-notes/${noteId}`);
+
+            if(!result.data.success){
+                console.log("An error occured: ", result.data.message);
+                const toastId = toast(
+                    "Something went wrong",
+                    {
+                        description: result.data.message,
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+            }
+
+            else{
+                console.log("Note deleted successfully!");
+                const toastId = toast(
+                    "Success",
+                    {
+                        description: result.data.message,
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+
+                router.push("/dashboard");
+            }
+        }
+        catch(error){
+            console.log("Something went wrong while deleting the note: ", error);
+            const toastId = toast(
+                "Something went wrong while deleting",
+                {
+                    description: "Please try again",
+                    action: {
+                        label: "Dismiss",
+                        onClick: () => {
+                            toast.dismiss(toastId);
+                        }
+                    }
+                }
+            )
+        }
+        finally{
+            setDeleteLoader(false);
+        }
+    }
 
 
     return (
@@ -221,6 +284,26 @@ export default function NotesPage(){
                                                             comments={noteDetails.comments as any}
                                                             username={(noteDetails.uploadedBy as User).username}
                                                         />
+                                                    )
+                                                }
+                                                {
+                                                    session && (
+                                                        <button
+                                                            onClick={deleteHandler}
+                                                            className="mt-6 px-5 py-2 text-base text-black/90 font-semibold rounded-md border 
+                                                                cursor-pointer border-red-600 bg-red-400 hover:border-black/90 
+                                                                dark:hover:border-white/90 transition-all duration-300"
+                                                        >
+                                                            {
+                                                                deleteLoader ? (
+                                                                    <div className="flex items-center">
+                                                                        <Loader2 className="mr-2 h-5 w-5 animate-spin"/> Please wait
+                                                                    </div>
+                                                                )
+                                                                :
+                                                                "Delete"
+                                                            }
+                                                        </button>
                                                     )
                                                 }
                                             </div>

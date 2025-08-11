@@ -68,6 +68,7 @@ export async function DELETE(request: NextRequest, {params}: {params: {notesId: 
             message: "You must be logged in to delete the notes"
         })
     }
+    
 
     await dbConnect();
 
@@ -116,7 +117,7 @@ export async function DELETE(request: NextRequest, {params}: {params: {notesId: 
         }
 
         return NextResponse.json({
-            success: false,
+            success: true,
             status: 200,
             message: "Notes deleted successfully"
         })
