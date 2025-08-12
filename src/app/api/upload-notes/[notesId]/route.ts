@@ -15,7 +15,7 @@ export async function GET(request: NextRequest, context: {params: Promise<{notes
         const noteDetails = await notesModel.findOne({_id: notesId})
                                                                 .populate({
                                                                     path: "uploadedBy",
-                                                                    select: "username"
+                                                                    select: "username _id"
                                                                 })
                                                                 .populate({
                                                                     path: "comments",

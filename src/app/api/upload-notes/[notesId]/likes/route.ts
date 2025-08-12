@@ -36,7 +36,7 @@ export async function POST(request: NextRequest, context: {params: Promise<{note
         const alreadyLiked = currentNote.likes.includes(userId);
         if(alreadyLiked){
             console.log("You unliked the post");
-            currentNote.likes = (currentNote.likes as mongoose.Types.ObjectId[]).filter((id) => id !== userId);
+            currentNote.likes = (currentNote.likes as mongoose.Types.ObjectId[]).filter((id) => id.toString() !== userId.toString());
         }
         else{
             console.log("You liked the post");

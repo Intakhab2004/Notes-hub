@@ -28,6 +28,7 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
     const { data: session } = useSession();
 
     const [loader, setLoader] = useState(false);
+    const [deleteLoader, setDeleteLoader] = useState(false);
     const [allComments, setAllComments] = useState(comments);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -102,6 +103,76 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
         }
     }
 
+    const deleteHandler = async(id: string) => {
+        setDeleteLoader(true);
+
+        try{
+            const result = await axios.delete(`/api/comment/${id}`, {
+                data: {notesId: noteId}
+            })
+
+            if(!result.data.success){
+                console.log("An error occured: ", result.data.message);
+                const toastId = toast(
+                    "Something went wrong",
+                    {
+                        description: result.data.message,
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+            }
+
+            else{
+                setAllComments((prevComments) => {
+                    const updated = prevComments.filter(comment => (comment._id as string) !== id);
+                    
+                    if((currentPage - 1) * COMMENTS_PER_PAGE >= updated.length && currentPage > 1){
+                        setCurrentPage(currentPage - 1);
+                    }
+                    return updated;
+                })
+
+                console.log("Comment deleted successfully!");
+                const toastId = toast(
+                    "Success",
+                    {
+                        description: result.data.message,
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+            }
+        }
+        catch(error){
+            console.log("Something went wrong while deleting the comment: ", error);
+            const toastId = toast(
+                "Something went wrong while deleting",
+                {
+                    description: "Please try again",
+                    action: {
+                        label: "Dismiss",
+                        onClick: () => {
+                            toast.dismiss(toastId);
+                        }
+                    }
+                }
+            )
+        }
+        finally{
+            setDeleteLoader(false);
+        }
+    }
+
+
     return (
         <div className="w-full max-w-3xl mt-4 p-4 rounded bg-white dark:bg-gray-800 shadow-md">
             <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">Comments</h3>
@@ -168,7 +239,23 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
                                     {comment.content}
                                 </div>
 
-                                <DateFormat rawDate={comment.createdAt} />
+                                <div className="flex justify-between items-center">
+                                    <DateFormat rawDate={comment.createdAt} />
+                                    {
+                                        (session && (comment.userId as User)?.username === username) && (
+                                            <button
+                                                onClick={() => deleteHandler(comment._id as string)}
+                                                disabled={deleteLoader}
+                                                className="text-[0.9rem] bg-gray-300 px-[4px] py-[1px] rounded-sm border border-black/90 dark:bg-gray-700
+                                                    dark:border-white/80 cursor-pointer"
+                                            >
+                                                {
+                                                    deleteLoader ? "Please wait" : "Delete"
+                                                }
+                                            </button>
+                                        )
+                                    }
+                                </div>
                             </li>
                         ))
                     )
