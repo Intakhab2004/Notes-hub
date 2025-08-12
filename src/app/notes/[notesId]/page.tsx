@@ -1,8 +1,8 @@
 "use client"
 
+import dynamic from "next/dynamic";
 import DateFormat from "@/components/common/DateFormat";
 import Navbar from "@/components/common/Navbar"
-import PdfViewer from "@/components/common/PdfViewer";
 import Sidebar from "@/components/common/Sidebar"
 import { Notes } from "@/models/Notes";
 import axios from "axios";
@@ -17,6 +17,10 @@ import { User } from "@/models/User";
 import CommentBox from "@/components/common/CommentSection";
 import Footer from "@/components/common/Footer";
 import { useSession } from "next-auth/react";
+
+const PdfViewer = dynamic(() => import("@/components/common/PdfViewer"), {
+    ssr: false,
+});
 
 
 
