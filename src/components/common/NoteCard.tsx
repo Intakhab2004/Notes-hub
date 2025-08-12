@@ -15,8 +15,8 @@ export default function NoteCard({note}: {note: Notes}){
     return (
         <div
             onClick={() => router.push(`/notes/${note._id}`)}
-            className="group w-[48%] md:w-[30%] bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-gray-700 
-            hover:scale-105 overflow-hidden flex flex-col transition-all duration-300"
+            className="group w-[165px] md:w-[300px] bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-gray-700 
+            hover:scale-105 overflow-hidden flex flex-col flex-shrink-0 transition-all duration-300"
         >
             {/* Image */}
             <div className="relative w-full h-30 md:h-50 bg-gray-100 dark:bg-gray-700 overflow-hidden">
@@ -68,7 +68,7 @@ export default function NoteCard({note}: {note: Notes}){
                 {/* Likes and Comment */}
                 <div className="flex items-center text-lg justify-around py-2 border-t dark:border-gray-700">
                     <button className="flex items-center gap-2 text-red-600 hover:scale-110 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 cursor-pointer transition-all duration-300">
-                        <FcLike /> <span className="font-medium">32</span>
+                        <FcLike /> <span className="font-medium">{note.likes.length}</span>
                     </button>
                 
                     <button className="flex items-center gap-2 text-blue-600 hover:scale-110 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer transition-all duration-300">

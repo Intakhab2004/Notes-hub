@@ -124,7 +124,7 @@ export default function MyNotes(){
 																				</p>
 																				<div className="flex gap-4">
 																					<div className="flex gap-1 items-center">
-																						<FcLike /> {note.likes}
+																						<FcLike /> {note.likes.length}
 																					</div>
 																					<div className="flex gap-1 items-center">
 																						<FaComment /> {note.comments.length}
