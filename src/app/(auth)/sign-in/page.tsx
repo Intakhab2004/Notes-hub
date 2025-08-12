@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input"
 import { AlertCircleIcon, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
-import axios from "axios"
 import { signIn } from "next-auth/react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 

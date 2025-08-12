@@ -1,11 +1,11 @@
 import dbConnect from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { auhtOptions } from "../auth/[...nextauth]/options";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import notesModel from "@/models/Notes";
 
 
-export async function GET(request: NextRequest){
+export async function GET(){
     const session = await getServerSession(auhtOptions);
     if(!session || !session.user){
         console.log("User not logged in");

@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { commentSchema } from "@/schemas/commentSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";

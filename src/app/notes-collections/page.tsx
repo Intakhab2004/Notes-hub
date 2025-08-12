@@ -86,10 +86,10 @@ export default function NotesCollections(){
                                 Get all your Notes Here
                             </h1>
                             <p className="text-base font-medium text-gray-400 mt-7">
-                                At NotesHub, you'll find notes for every subject, every topic, and every level.
-                                From engineering and science to arts and literature, we've got you covered.
-                                Whether it's detailed study material, quick revision guides, or project references, it's all here.
-                                No matter what you're learning, NotesHub has the perfect notes for you.
+                                At NotesHub, you will find notes for every subject, every topic, and every level.
+                                From engineering and science to arts and literature, we have got you covered.
+                                Whether it is detailed study material, quick revision guides, or project references, it is all here.
+                                No matter what you are learning, NotesHub has the perfect notes for you.
                             </p>
                         </div>
 

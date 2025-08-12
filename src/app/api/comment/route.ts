@@ -60,7 +60,7 @@ export async function POST(request: NextRequest){
         })
 
         //creating entry in the notes model
-        const updatedNotes = await notesModel.findByIdAndUpdate(
+        await notesModel.findByIdAndUpdate(
             notesId,
             {
                 $push: {comments: newComment._id}

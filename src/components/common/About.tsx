@@ -20,19 +20,19 @@ export default function AboutUs(){
                         <span className="font-semibold text-blue-400">NotesHub</span> is your all-in-one destination for sharing 
                         and discovering high-quality study resources. Built for <span className="font-semibold">students, educators, 
                         and lifelong learners,</span> the platform allows you to upload, download, and view study notes with ease. 
-                        Whether you're preparing for <span className="font-semibold">exams, working on assignments, or exploring new subjects, </span> 
+                        Whether you are preparing for <span className="font-semibold">exams, working on assignments, or exploring new subjects, </span> 
                         NotesHub keeps your learning materials organized and accessible anytime, anywhere.
                     </p>
                     <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed md:leading-loose text-sm md:text-base">
                         At its core, <span className="font-semibold text-blue-400">NotesHub</span> is more than just a storage 
-                        space for notes it's a collaborative learning environment. Users can connect with peers, exchange knowledge, 
+                        space for notes it is a collaborative learning environment. Users can connect with peers, exchange knowledge, 
                         and contribute to a growing community of learners. By enabling seamless sharing and feedback, the platform 
                         encourages active <span className="font-semibold">participation and a sense of belonging.</span>
                     </p>
                     <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed md:leading-loose text-sm md:text-base">
                         The platform supports multiple file formats, making it convenient to upload <span className="font-semibold">handwritten notes, typed 
                         documents, or even multimedia study aids.</span> With an intuitive interface and powerful search functionality, 
-                        finding exactly what you need takes only seconds. Whether you're looking for a quick summary or an in-depth 
+                        finding exactly what you need takes only seconds. Whether you are looking for a quick summary or an in-depth 
                         explanation, NotesHub puts the right resources at your fingertips.
                     </p>
                     <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed md:leading-loose text-sm md:text-base">

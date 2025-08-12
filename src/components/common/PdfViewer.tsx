@@ -4,7 +4,6 @@ import { Worker, Viewer } from '@react-pdf-viewer/core';
 import { zoomPlugin } from '@react-pdf-viewer/zoom';
 import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
 import { getFilePlugin } from '@react-pdf-viewer/get-file';
-import { fullScreenPlugin } from '@react-pdf-viewer/full-screen';
 
 
 import '@react-pdf-viewer/full-screen/lib/styles/index.css';

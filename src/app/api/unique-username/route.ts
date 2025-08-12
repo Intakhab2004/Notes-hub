@@ -2,7 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import userModel from "@/models/User";
 import { usernameSchema } from "@/schemas/signupSchema";
 import { NextRequest, NextResponse } from "next/server";
-import z, { success } from "zod";
+import z from "zod";
 
 const usernameQuerySchema = z.object({
     username: usernameSchema

@@ -219,7 +219,25 @@ export default function NotesPage(){
             
         }
         catch(error){
-
+            if(error instanceof Error){
+                console.log("Something went wrong: ", error.message);
+            }
+            else{
+                console.log("An unknown error: ", error);
+            }
+            
+            const toastId = toast(
+                "Something went wrong",
+                {
+                    description: "Please try again",
+                    action: {
+                        label: "Dismiss",
+                        onClick: () => {
+                            toast.dismiss(toastId);
+                        }
+                    }
+                }
+            )
         }
     }
 
