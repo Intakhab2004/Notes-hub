@@ -2,7 +2,10 @@
 
 import DateFormat from "@/components/common/DateFormat";
 import Navbar from "@/components/common/Navbar"
-import PdfViewer from "@/components/common/PdfViewer";
+import dynamic from "next/dynamic";
+const PdfViewer = dynamic(() => import("@/components/common/PdfViewer"), {
+  ssr: false,
+});
 import Sidebar from "@/components/common/Sidebar"
 import { Notes } from "@/models/Notes";
 import axios from "axios";
