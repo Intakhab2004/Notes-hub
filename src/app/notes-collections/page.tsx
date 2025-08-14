@@ -11,11 +11,28 @@ import NoteCard from "@/components/common/NoteCard"
 import { toast } from "sonner"
 import axios from "axios"
 import Footer from "@/components/common/Footer"
+import { useForm } from "react-hook-form"
+import { useDebounceCallback } from "usehooks-ts"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 
 
 export default function NotesCollections(){
     const [loader, setLoader] = useState(false);
     const [notes, setNotes] = useState<Notes[]>([]);
+    const [filteredNotes, setFilteredNotes] = useState<Notes[]>([]);
+    const [searchInput, setSearchInput] = useState("");
+
+    // For delayed search
+    const debounced = useDebounceCallback(setSearchInput, 500);
+
+    // react-hook-form
+    const form = useForm({
+        defaultValues: {
+            searchInput: ""
+        }
+    });
+
 
     useEffect(() => {
         const getAllNotes = async() => {
@@ -43,6 +60,7 @@ export default function NotesCollections(){
                 else{
                     console.log("Notes fetched successfully: ", result.data.message);
                     setNotes(result.data.notesResult);
+                    setFilteredNotes(result.data.notesResult);
                 }
             }
 
@@ -70,6 +88,25 @@ export default function NotesCollections(){
         getAllNotes();
 
     }, [])
+
+    
+    //Debounced Search
+    useEffect(() => {
+        if(!searchInput.trim()){
+            setFilteredNotes(notes);
+            return ;
+        }
+
+        const lower = searchInput.toLowerCase();
+        const result = notes.filter((note) => (
+            note.title.toLowerCase().includes(lower) ||
+            note.subject.toLowerCase().includes(lower) ||
+            note.tags.some((tag) => tag.toLowerCase().includes(lower))
+        ))
+
+        setFilteredNotes(result);
+
+    }, [searchInput, notes])
 
 
     return (
@@ -105,10 +142,33 @@ export default function NotesCollections(){
 
                     {/* Notes Container */}
                     <div className="w-full md:w-10/12 flex gap-6 md:gap-10 flex-wrap my-20">
-                        {/* TODO: Search bar
-                        <div className="w-full h-6 border-b-1 border-gray-400">
-
-                        </div> */}
+                        <div className="w-full h-6 border-gray-400 mb-6 ml-0 md:ml-[43rem]">
+                            <Form {...form}>
+                                <form>
+                                    <FormField
+                                        control={form.control}
+                                        name="searchInput"
+                                        render={({field}) => (
+                                            <FormItem>
+                                                <FormLabel>Search Keywords</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="Search title, subject, tags..."
+                                                        {...field}
+                                                        onChange={(e) => {
+                                                            field.onChange(e)
+                                                            debounced(e.target.value)
+                                                        }}
+                                                        className="w-full md:w-80"
+                                                    />
+                                                </FormControl>
+                                                <FormMessage/>
+                                            </FormItem>
+                                        )}
+                                    />
+                                </form>
+                            </Form>
+                        </div>
 
                         <div>
                             {
@@ -129,9 +189,9 @@ export default function NotesCollections(){
 									</div>
                                 )
                                 :
-                                <div className="flex justify-center flex-wrap gap-2 md:gap-6">
+                                <div className="flex justify-center flex-wrap flex-shrink-0 gap-2 md:gap-6">
                                     {
-                                        notes.map((note) => (
+                                        filteredNotes.map((note) => (
                                             <NoteCard
                                                 key={note._id as string}
                                                 note={note}
@@ -139,7 +199,6 @@ export default function NotesCollections(){
                                         ))
                                     }
                                 </div>
-
                             }
                         </div>
                     </div>
