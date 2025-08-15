@@ -20,6 +20,7 @@ import { User } from "@/models/User";
 import CommentBox from "@/components/common/CommentSection";
 import Footer from "@/components/common/Footer";
 import { useSession } from "next-auth/react";
+import SummaryBox from "@/components/common/SummaryBox";
 
 
 
@@ -291,7 +292,10 @@ export default function NotesPage(){
                                                             className="rounded-md object-contain w-full max-h-[80vh] shadow-lg"
                                                         />
                                                     ) : (
-                                                        <PdfViewer fileUrl={noteDetails.fileURL} />
+                                                        <>
+                                                            <PdfViewer fileUrl={noteDetails.fileURL} />
+                                                            <SummaryBox fileUrl={noteDetails.fileURL} />
+                                                        </>
                                                     )
                                                 }
                                             </div>
