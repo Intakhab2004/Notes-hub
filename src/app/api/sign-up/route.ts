@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import { sendMail } from "@/lib/mailConfig";
+import profileModel from "@/models/Profile";
 import userModel from "@/models/User";
 import { signupSchema } from "@/schemas/signupSchema";
 import bcryptjs from "bcryptjs";
@@ -14,7 +15,7 @@ export async function POST(request: NextRequest){
 
         // Zod validation for signup schema
         const signupQuerySchema = {  
-        username,
+            username,
             email,
             password,                        // This object for schema validation and zod requires an object in safeParse.
             confirmPassword
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest){
                 existingUserByEmail.password = hashedPassword;
                 existingUserByEmail.otp = otpCode;
                 existingUserByEmail.otpExpiry = expiryDate;
-
+                
                 await existingUserByEmail.save();
             }
         }
@@ -90,15 +91,26 @@ export async function POST(request: NextRequest){
         }
 
         else{
+            const userProfile = new profileModel({
+                firstName: null,
+                lastName: null,
+                gender: null,
+                dateOfBirth: null,
+                about: null,
+                contactNumber: null
+            })
+            await userProfile.save();
+
             const newUser = new userModel({
                 username,
                 email,
                 password: hashedPassword,
+                image: "",
+                userDetails: userProfile._id,
                 isVerified: false,
                 otp: otpCode,
                 otpExpiry: expiryDate
             })
-
             await newUser.save();
         }
 
