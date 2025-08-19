@@ -18,7 +18,7 @@ const Sidebar = () => {
 					!session && (
 						<Link 
 							href="/" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 hover:underline`}
+							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md`}
 						>
 							<FaHome /> Home
 						</Link>
@@ -26,7 +26,7 @@ const Sidebar = () => {
 				}
 				<Link 
 					href="/notes-collections" 
-					className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/notes-collections" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:underline"}`}
+					className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/notes-collections" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
 				>
 					<NotebookText className='w-5 h-5' /> Notes
 				</Link>
@@ -34,7 +34,7 @@ const Sidebar = () => {
 					session && (
 						<Link 
 							href="/profile" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/profile" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:underline"}`}
+							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/profile" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
 						>	
 							<LayoutDashboard className='w-5 h-5' /> My Profile
 						</Link>
@@ -44,7 +44,7 @@ const Sidebar = () => {
 					session && (
 						<Link 
 							href="/dashboard" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/dashboard" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:underline"}`}
+							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/dashboard" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
 						>	
 							<StickyNote className='w-5 h-5' /> My Notes
 						</Link>
@@ -54,7 +54,7 @@ const Sidebar = () => {
 					session && (
 						<Link 
 							href="/upload-notes" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/upload-notes" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:underline"}`}
+							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/upload-notes" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
 						>
 							<UploadIcon className='w-5 h-5'/> Upload Notes
 						</Link>
@@ -66,8 +66,8 @@ const Sidebar = () => {
 				{
 					session && (
 						<Link 
-							href="/upload-notes" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/upload-notes" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:underline"}`}
+							href="/update-profile"
+							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/upload-notes" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
 						>
 							<Settings className='w-5 h-5'/> Setting
 						</Link>
@@ -77,7 +77,7 @@ const Sidebar = () => {
 					session && (
 						<button 
 							onClick={() => signOut({callbackUrl: "/"})} 
-							className="flex gap-2 items-center text-gray-500 dark:text-gray-400 font-medium py-1 px-2 cursor-pointer hover:underline"
+							className="flex gap-2 items-center text-gray-500 dark:text-gray-400 font-medium py-1 px-2 cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"
 						>
 							<LogOut className='w-5 h-5'/> Logout
 						</button>
