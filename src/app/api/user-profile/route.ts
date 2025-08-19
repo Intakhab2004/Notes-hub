@@ -5,7 +5,6 @@ import { auhtOptions } from "../auth/[...nextauth]/options";
 import userModel from "@/models/User";
 import notesModel from "@/models/Notes";
 
-
 export async function GET(request: NextRequest){
     await dbConnect();
 
@@ -22,7 +21,7 @@ export async function GET(request: NextRequest){
     try{
         const response = await userModel.findOne({_id: session.user._id}).populate({
             path: "userDetails",
-            select: "name gender dateOfBirth about contactNumber"
+            select: "firstName lastName gender dateOfBirth about contactNumber"
         });
         
         if(!response){
@@ -39,10 +38,8 @@ export async function GET(request: NextRequest){
             success: true,
             status: 200,
             message: "User details fetched successfully",
-            data: {
-                userData: response,
-                notesLength: uploadedNotesByUser.length
-            }
+            response,
+            notesLength: uploadedNotesByUser.length
         })
     }
     catch(error: unknown){

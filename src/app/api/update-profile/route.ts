@@ -77,7 +77,7 @@ export async function POST(request: NextRequest){
 
     }
     catch(error){
-        console.log("Something went wrong while sign in");
+        console.log("Something went wrong");
         if(error instanceof Error){
             console.log("An error occured: ", error.message);
         }
