@@ -38,7 +38,7 @@ export async function POST(request: NextRequest){
             firstName, 
             lastName, 
             gender, 
-            dateOfBirth, 
+            dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
             about, 
             contactNumber
         }
@@ -50,24 +50,28 @@ export async function POST(request: NextRequest){
                 success: false,
                 status: 402,
                 message: "Schema validation failed",
-                errors: validationResult.error.flatten().fieldErrors,
+                errors: validationResult.error.issues[0].message
             })
         }
 
-        const updatedProfile = await profileModel.findByIdAndUpdate(
-            currentUser.userDetails,
-            {$set: validationResult.data},
-            {new: true}
-        )
-
-        if(!updatedProfile){
-            console.log("An error occured while updating the profile");
+        const profile = await profileModel.findOne({_id: currentUser.userDetails});
+        if(!profile){
             return NextResponse.json({
                 success: false,
-                status: 403,
-                message: "Something went wrong while updating the user"
+                status: 404,
+                message: "Profile not found"
             })
         }
+
+        if (firstName) profile.firstName = firstName;
+        if (lastName) profile.lastName = lastName;
+        if (gender) profile.gender = gender;
+        if (dateOfBirth) profile.dateOfBirth = dateOfBirth;
+        if (about) profile.about = about;
+        if (contactNumber) profile.contactNumber = contactNumber;
+
+        await profile.save();
+        
 
         return NextResponse.json({
             success: true,

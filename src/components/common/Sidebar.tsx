@@ -67,7 +67,7 @@ const Sidebar = () => {
 					session && (
 						<Link 
 							href="/update-profile"
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/upload-notes" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
+							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/update-profile" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
 						>
 							<Settings className='w-5 h-5'/> Setting
 						</Link>
@@ -88,4 +88,4 @@ const Sidebar = () => {
 	)
 }
 
-export default Sidebar
+export default Sidebar;

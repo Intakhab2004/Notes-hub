@@ -2,8 +2,11 @@ import dbConnect from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { auhtOptions } from "../auth/[...nextauth]/options";
+import profileModel from "@/models/Profile";
 import userModel from "@/models/User";
 import notesModel from "@/models/Notes";
+
+void profileModel;
 
 export async function GET(request: NextRequest){
     await dbConnect();

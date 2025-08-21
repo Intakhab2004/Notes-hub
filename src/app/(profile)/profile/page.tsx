@@ -144,7 +144,7 @@ export default function ProfilePage(){
                                         </div>
                                     </div>
 
-                                    <div className="w-11/12 md:w-9/12 flex gap-6 md:gap-10 flex-wrap mt-10 md:mt-20 ">
+                                    <div className="w-11/12 md:w-9/12 flex gap-6 md:gap-10 flex-wrap mt-10 md:mt-20">
                                         {/* About */}
                                         <div className="w-full p-3 pb-8 bg-gray-200 dark:bg-gray-900 border dark:border-gray-700 rounded-md shadow-lg">
                                             <div className="w-full flex justify-between items-center">
@@ -219,7 +219,16 @@ export default function ProfilePage(){
                                                     <div>
                                                         <h2 className="text-[0.9rem] dark:text-yellow-400 text-blue-700 font-semibold">Date of Birth</h2>
                                                         <p className="text-[0.9rem] text-gray-600 dark:text-gray-400">
-                                                            {(userData.userDetails as Profile).dateOfBirth ? (userData.userDetails as Profile).dateOfBirth : "Enter your date of birth"}
+                                                            {
+                                                                (userData.userDetails as Profile).dateOfBirth ? 
+                                                                        new Date((userData.userDetails as Profile).dateOfBirth).toLocaleDateString("en-GB", {
+                                                                            day: "numeric",
+                                                                            month: "short",
+                                                                            year: "numeric",
+                                                                        }) 
+                                                                        : 
+                                                                        "Enter your date of birth"
+                                                            }
                                                         </p>
                                                     </div>
                                                 </div>

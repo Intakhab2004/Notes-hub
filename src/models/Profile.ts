@@ -7,7 +7,7 @@ export interface Profile extends Document {
     gender: string,
     dateOfBirth: string,
     about: string,
-    contactNumber: number
+    contactNumber: string
 }
 
 const profileSchema: Schema<Profile> = new Schema({
@@ -35,7 +35,7 @@ const profileSchema: Schema<Profile> = new Schema({
     },
 
     contactNumber: {
-        type: Number,
+        type: String,
         trim: true
     }
 })
