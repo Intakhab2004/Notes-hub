@@ -6,6 +6,7 @@ import userModel from "@/models/User";
 import { profileSchema } from "@/schemas/profileSchema";
 import profileModel from "@/models/Profile";
 import cloudinary from "@/lib/cloudinaryConfig";
+import notesModel from "@/models/Notes";
 
 
 export async function POST(request: NextRequest){
@@ -180,6 +181,96 @@ export async function PUT(request: NextRequest){
             console.log("An unknown error: ", error);
         }
         
+        return NextResponse.json({
+            success: false,
+            status: 500,
+            message: "Internal server error"
+        })
+    }
+}
+
+
+export async function DELETE(request: NextRequest){
+    const session = await getServerSession(auhtOptions);
+    if(!session || !session.user){
+        console.log("User not logged in");
+        return NextResponse.json({
+            success: false,
+            status: 402,
+            message: "User not logged in"
+        })
+    }
+
+    await dbConnect();
+
+    try{
+        const userId = session.user._id;
+    
+        const currentUser = await userModel.findOne({_id: userId});
+        if(!currentUser){
+            return NextResponse.json({
+                success: false,
+                status: 402,
+                message: "User not found"
+            })
+        }
+
+        // Deleting likes of the user from notes
+        await notesModel.updateMany(
+            {},
+            {$pull: {likes: {_id: userId}}}
+        )
+
+        // Deleteing commnets of the user from notes
+        await notesModel.updateMany(
+            {},
+            {$pull: {comments: {userId: userId}}}
+        )
+
+        // Deleting all the notes of the user
+        const deleteNotes = await notesModel.deleteMany({uploadedBy: userId});
+        if(!deleteNotes){
+            return NextResponse.json({
+                success: false,
+                status: 401,
+                message: "Error occured while deleting notes"
+            })
+        }
+
+        // Deleting profile of the user
+        // const deleteProfile = await profileModel.findByIdAndDelete(currentUser.userDetails);
+        // if(!deleteProfile){
+        //     return NextResponse.json({
+        //         success: false,
+        //         status: 401,
+        //         message: "Error occured while deleting the profile"
+        //     })
+        // }
+
+        const deleteUser = await userModel.findByIdAndDelete(userId);
+        if(!deleteUser){
+            return NextResponse.json({
+                success: false,
+                status: 403,
+                message: "Something went wrong while deleting the user"
+            })
+        }
+
+        return NextResponse.json({
+            success: true,
+            status: 200,
+            message: "User deleted successfully"
+        })
+    }
+    catch(error: unknown){
+        console.log("Something went wrong while deleting comment");
+        if(error instanceof Error){
+            console.log("An error occured: ", error.message);
+        }
+        else{
+            console.log("an unknown error: ", error);
+        }
+                
         return NextResponse.json({
             success: false,
             status: 500,
