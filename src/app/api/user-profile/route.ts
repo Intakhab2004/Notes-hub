@@ -8,7 +8,7 @@ import notesModel from "@/models/Notes";
 
 void profileModel;
 
-export async function GET(request: NextRequest){
+export async function GET(){
     await dbConnect();
 
     const session = await getServerSession(auhtOptions);

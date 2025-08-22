@@ -8,7 +8,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Profile } from "@/models/Profile";
 import { User } from "@/models/User";
 import { profileSchema } from "@/schemas/profileSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,10 +26,12 @@ import axios from "axios";
 export default function UpdateProfile(){
     const [loader, setLoader] = useState(false);
     const [submitDetailsLoader, setSubmitDetailsLoader] = useState(false);
+    const [submitImageLoader, setSubmitImageLoader] = useState(false);
     const [previewURL, setPreviewURL] = useState<string | null>(null);
     const [userData, setUserData] = useState<User | null>(null);
 
-    const imageForm = useForm();
+    const imageForm = useForm<{image: FileList}>();
+
     const detailsForm = useForm<z.infer<typeof profileSchema>>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
@@ -43,8 +44,128 @@ export default function UpdateProfile(){
         }
     })
 
-    const onSubmitImage = async() => {
+    useEffect(() => {
+        const getDetails = async() => {
+            setLoader(true);
 
+            try{
+                const result = await axios.get("/api/user-profile");
+
+                if(!result.data.success){
+                    console.log("An error occured: ", result.data.message);
+                    const toastId = toast(
+                        "Something went wrong",
+                        {
+                            description: result.data.message,
+                            action: {
+                                label: "Dismiss",
+                                onClick: () => {
+                                    toast.dismiss(toastId);
+                                }
+                            }
+                        }
+                    )
+                }
+
+                else{
+                    setUserData(result.data.response);
+                }
+            }
+            catch(error: unknown){
+                if(error instanceof Error){
+                    console.log("Something went wrong: ", error.message);
+                }
+                else{
+                    console.log("An unknown error: ", error);
+                }
+
+                const toastId = toast(
+                    "Something went wrong",
+                    {
+                        description: "Please try again",
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+            }
+            finally{
+                setLoader(false);
+            }
+        }
+
+        getDetails();
+
+    }, [setUserData])
+
+    const onSubmitImage = async(data: {image: FileList}) => {
+        try{
+            setSubmitImageLoader(true);
+
+            const file = data.image[0];
+            const formData = new FormData();
+            formData.append("image", file);
+
+            const result = await axios.put("/api/update-profile", formData);
+
+            if(!result.data.success){
+                console.log("Something went wrong: ", result.data.message);
+                const toastId = toast(
+                    "Something went wrong",
+                    {
+                        description: result.data.message,
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+            }
+            
+            else{
+                const toastId = toast(
+                    "Success",
+                    {
+                        description: result.data.message,
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+            }
+        }
+        catch(error: unknown){
+            if(error instanceof Error){
+                console.log("Something went wrong: ", error.message);
+            }
+            else{
+                console.log("An unknown error: ", error);
+            }
+
+            const toastId = toast(
+                "Something went wrong",
+                {
+                    description: "Please try again",
+                    action: {
+                        label: "Dismiss",
+                        onClick: () => {
+                            toast.dismiss(toastId);
+                        }
+                    }
+                }
+            )
+        }
+        finally{
+            setSubmitImageLoader(false);
+        }
     }
 
     const onSubmitDetails = async(data: z.infer<typeof profileSchema>) => {
@@ -142,17 +263,17 @@ export default function UpdateProfile(){
                                     <div className="flex gap-6 md:gap-4 items-center w-full p-3 py-5 bg-gray-50 dark:bg-gray-900 border dark:border-gray-700 rounded-md shadow-lg">
                                         <div>
                                             {
-                                                userData?.image ? (
+                                                previewURL ? (
                                                     <img
-                                                        src={userData?.image}
+                                                        src={previewURL}
                                                         alt="profile-img"
                                                         className="w-24 h-24 md:w-32 md:h-32 border border-black dark:border-white rounded-full dark:bg-gradient-to-b dark:from-pink-500 dark:to-indigo-700 bg-gradient-to-b from-blue-500 to-gray-700"
                                                     />
                                                 )
                                                 :
-                                                previewURL ? (
+                                                userData?.image ? (
                                                     <img
-                                                        src={previewURL}
+                                                        src={userData?.image}
                                                         alt="profile-img"
                                                         className="w-24 h-24 md:w-32 md:h-32 border border-black dark:border-white rounded-full dark:bg-gradient-to-b dark:from-pink-500 dark:to-indigo-700 bg-gradient-to-b from-blue-500 to-gray-700"
                                                     />
@@ -200,19 +321,34 @@ export default function UpdateProfile(){
                                                                 </FormItem>
                                                             )}
                                                         />
+                                                        <div className="flex items-center gap-2">
+                                                            <label
+                                                                htmlFor="image-upload"
+                                                                className="flex gap-2 items-center justify-center px-3 py-[0.2rem] text-[0.9rem] font-medium border border-gray-500 rounded-sm cursor-pointer"
+                                                            >
+                                                                <Image className="w-5 h-5"/> Select
+                                                            </label>
+                                                            <button
+                                                                type="submit"
+                                                                className="flex gap-2 items-center justify-center px-3 py-[0.2rem] text-[0.9rem] font-medium border border-gray-500 rounded-sm cursor-pointer"
+                                                            >
+                                                                {
+                                                                    submitImageLoader ? (
+                                                                        <div className="flex justify-center items-center gap-2">
+                                                                            <Loader2 className="mr-2 h-5 w-5 animate-spin"/> Please wait
+                                                                        </div>
+                                                                    )
+                                                                    :
+                                                                    (
+                                                                        <div className="flex justify-center items-center gap-2">
+                                                                            <Upload className="w-5 h-5"/> Update
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            </button>
+                                                        </div>
                                                     </form>
                                                 </Form>
-                                                <label
-                                                    htmlFor="image-upload"
-                                                    className="flex gap-2 items-center justify-center px-3 py-[0.2rem] text-[0.9rem] font-medium border border-gray-500 rounded-sm cursor-pointer"
-                                                >
-                                                    <Image className="w-5 h-5"/> Select
-                                                </label>
-                                                <button 
-                                                    className="flex gap-2 items-center justify-center px-3 py-[0.2rem] text-[0.9rem] font-medium border border-gray-500 rounded-sm cursor-pointer"
-                                                >
-                                                    <Upload className="w-5 h-5"/> Update
-                                                </button>
                                             </div>
                                         </div>
                                     </div>

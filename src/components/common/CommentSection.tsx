@@ -24,7 +24,7 @@ interface CommentBoxProps {
 
 const COMMENTS_PER_PAGE = 5;
 
-export default function CommentBox({ noteId, comments, username }: CommentBoxProps) {
+export default function CommentBox({ noteId, comments }: CommentBoxProps) {
     const { data: session } = useSession();
 
     const [loader, setLoader] = useState(false);

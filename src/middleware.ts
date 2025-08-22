@@ -27,5 +27,6 @@ export const config = {
         "/dashboard",
         "/upload-notes",
         "/profile",
+        "/update-profile"
     ]
 }

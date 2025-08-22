@@ -210,7 +210,7 @@ const UploadNotes = () => {
 											<div>
 												<input
 													type="file"
-													accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp"
+													accept=".pdf,.jpg,.jpeg,.png,.webp"
 													onChange={(e) => {
 														const file = e.target.files?.[0];
 														if(file){
@@ -266,7 +266,7 @@ const UploadNotes = () => {
 																	Supported file types are
 																</p>
 																<p className="text-[0.6rem] font-bold">
-																	.pdf | .doc | .docx | .jpg | .jpeg | .png | .webp
+																	.pdf | .jpg | .jpeg | .png | .webp
 																</p>
 															</div>
 														)

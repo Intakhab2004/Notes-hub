@@ -43,7 +43,6 @@ export default function ProfilePage(){
 
                 else{
                     setUserData(result.data.response);
-
                     setNumberOfNotes(result.data.notesLength);
                 }
             }
@@ -111,11 +110,23 @@ export default function ProfilePage(){
 
                                         <div className="-mt-20">
                                             <div className="flex flex-col items-center">
-                                                <img
-                                                    src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${userData?.username}`}
-                                                    alt="profile-img"
-                                                    className="w-40 h-40 border border-black dark:border-white rounded-full dark:bg-gradient-to-b dark:from-pink-500 dark:to-indigo-700 bg-gradient-to-b from-blue-500 to-gray-700"
-                                                />
+                                                {
+                                                    userData?.image ? (
+                                                        <img
+                                                            src={userData.image}
+                                                            alt="profile-img"
+                                                            className="w-40 h-40 border border-black dark:border-white rounded-full dark:bg-gradient-to-b dark:from-pink-500 dark:to-indigo-700 bg-gradient-to-b from-blue-500 to-gray-700"
+                                                        />
+                                                    )
+                                                    :
+                                                    (
+                                                        <img
+                                                            src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${userData?.username}`}
+                                                            alt="profile-img"
+                                                            className="w-40 h-40 border border-black dark:border-white rounded-full dark:bg-gradient-to-b dark:from-pink-500 dark:to-indigo-700 bg-gradient-to-b from-blue-500 to-gray-700"
+                                                        />
+                                                    )
+                                                }
                                                 <h2 className="mt-1 text-xl md:text-2xl font-bold">
                                                     {userData?.username}
                                                 </h2>
