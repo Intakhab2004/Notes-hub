@@ -21,12 +21,18 @@ import { Textarea } from "@/components/ui/textarea";
 import Footer from "@/components/common/Footer";
 import { toast } from "sonner";
 import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { signOut } from "next-auth/react";
+
 
 
 export default function UpdateProfile(){
     const [loader, setLoader] = useState(false);
     const [submitDetailsLoader, setSubmitDetailsLoader] = useState(false);
     const [submitImageLoader, setSubmitImageLoader] = useState(false);
+    const [deleteLoader, setDeleteLoader] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [previewURL, setPreviewURL] = useState<string | null>(null);
     const [userData, setUserData] = useState<User | null>(null);
 
@@ -237,6 +243,69 @@ export default function UpdateProfile(){
         }
         finally{
             setSubmitDetailsLoader(false);
+        }
+    }
+
+    const handleAccountDelete = async() => {
+        setDeleteLoader(true);
+        try{
+            const result = await axios.delete("/api/update-profile");
+            if(!result.data.success){
+                console.log("An error occured: ", result.data.message);
+                const toastId = toast(
+                    "Something went wrong",
+                    {
+                        description: result.data.message,
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+            }
+
+            else{
+                const toastId = toast(
+                    "Success",
+                    {
+                        description: result.data.message,
+                        action: {
+                            label: "Dismiss",
+                            onClick: () => {
+                                toast.dismiss(toastId);
+                            }
+                        }
+                    }
+                )
+                setIsOpen(false);
+                await signOut({callbackUrl: "/sign-in"});
+            }
+        }
+        catch(error){
+            if(error instanceof Error){
+                console.log("Something went wrong: ", error.message);
+            }
+            else{
+                console.log("An unknown error: ", error);
+            }
+
+            const toastId = toast(
+                "Something went wrong",
+                {
+                    description: "Please try again",
+                    action: {
+                        label: "Dismiss",
+                        onClick: () => {
+                            toast.dismiss(toastId);
+                        }
+                    }
+                }
+            )
+        }
+        finally{
+            setDeleteLoader(false);
         }
     }
 
@@ -540,6 +609,62 @@ export default function UpdateProfile(){
                                     </div>
                                 </div>
                             </>
+                        )
+                    }
+                    {
+                        !loader && (
+                            <div className="w-11/12 md:w-8/12 p-3 py-6 md:p-8 flex items-start gap-6 md:gap-10 mb-16 bg-red-300 dark:bg-[#4b0000cf] border border-red-700 dark:border-red-600 rounded-sm">
+                                <div className="p-3 bg-red-400 dark:bg-red-300 rounded-full">
+                                    <RiDeleteBin6Line className="text-red-800 w-8 h-8"/>
+                                </div>
+                                <div className="md:w-3/4">
+                                    <h1 className="text-[1.1rem] font-bold text-black dark:text-white mb-1">
+                                        Delete Account
+                                    </h1>
+                                    <h3 className="text-[1.2rem] font-medium text-red-700 dark:text-red-200 mb-2">
+                                        Would you like to delete account?
+                                    </h3>
+                                    <h3 className="text-base font-medium text-red-700 dark:text-red-200 mb-3">
+                                        Deleting your account is permanent and will remove all your uploaded content permanently from the server.
+                                    </h3>
+                                    <AlertDialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+                                        <AlertDialogTrigger asChild>
+                                            <button className="text-red-950 dark:text-black font-semibold italic cursor-pointer">
+                                                I want to delete my account
+                                            </button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This action cannot be undone. This will permanently delete your
+                                                    account and delete all of your content.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel disabled={deleteLoader}>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction 
+                                                    onClick={async(event) => {
+                                                        event.preventDefault();
+                                                        await handleAccountDelete();
+                                                    }} 
+                                                    disabled={deleteLoader}
+                                                >
+                                                    {
+                                                        deleteLoader ? (
+                                                            <div className="flex items-center">
+                                                                <Loader2 className="mr-2 h-5 w-5 animate-spin"/> Please wait
+                                                            </div>
+                                                        )
+                                                        :
+                                                        "Continue"
+                                                    }
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </div>
+                            </div>
                         )
                     }
                 </div>
