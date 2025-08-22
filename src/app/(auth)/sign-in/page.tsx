@@ -80,7 +80,7 @@ export default function SigninPage(){
 
             if(result?.url){
                 console.log("NEW URL", result.url);
-                router.replace("/dashboard");
+                router.replace("/profile");
             }
         }
 

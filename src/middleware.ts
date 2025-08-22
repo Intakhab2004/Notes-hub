@@ -25,6 +25,8 @@ export const config = {
         "/sign-in",
         "/verify/:path*",
         "/dashboard",
-        "/upload-notes"
+        "/upload-notes",
+        "/profile",
+        "/update-profile"
     ]
 }

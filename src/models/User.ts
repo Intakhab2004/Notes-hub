@@ -1,12 +1,15 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { Profile } from "./Profile";
 
 export interface User extends Document {
     username: string,
     email: string,
     password: string,
+    image: string,
     isVerified: boolean,
+    userDetails: mongoose.Types.ObjectId | Profile,
     otp: string,
-    otpExpiry: Date
+    otpExpiry: Date,
 }
 
 const userSchema: Schema<User> = new mongoose.Schema({
@@ -29,9 +32,18 @@ const userSchema: Schema<User> = new mongoose.Schema({
         required: [true, "Password is required"]
     },
 
+    image: {
+        type: String,
+    },
+
     isVerified: {
         type: Boolean,
         default: false
+    },
+
+    userDetails: {
+        type: mongoose.Types.ObjectId,
+        ref: "Profile"
     },
 
     otp: {

@@ -24,11 +24,11 @@ interface CommentBoxProps {
 
 const COMMENTS_PER_PAGE = 5;
 
-export default function CommentBox({ noteId, comments, username }: CommentBoxProps) {
+export default function CommentBox({ noteId, comments }: CommentBoxProps) {
     const { data: session } = useSession();
 
     const [loader, setLoader] = useState(false);
-    const [deleteLoader, setDeleteLoader] = useState(false);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
     const [allComments, setAllComments] = useState(comments);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -36,7 +36,7 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
     const paginatedComments = allComments.slice((currentPage - 1) * COMMENTS_PER_PAGE, currentPage * COMMENTS_PER_PAGE);
 
     const form = useForm<z.infer<typeof commentSchema>>({
-        resolver: zodResolver(commentSchema)
+        resolver: zodResolver(commentSchema),
     })
 
     const handlePostComment = async (data: z.infer<typeof commentSchema>) => {
@@ -67,6 +67,7 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
             else{
                 setAllComments([result.data.newComment, ...allComments]);
                 setCurrentPage(1);
+                form.reset();
 
                 const toastId = toast(
                     result.data.message,
@@ -104,7 +105,7 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
     }
 
     const deleteHandler = async(id: string) => {
-        setDeleteLoader(true);
+        setDeletingId(id);
 
         try{
             const result = await axios.delete(`/api/comment/${id}`, {
@@ -168,7 +169,7 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
             )
         }
         finally{
-            setDeleteLoader(false);
+            setDeletingId(null);
         }
     }
 
@@ -232,7 +233,7 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
                                 className="border-1 border-gray-200 dark:border-gray-700 py-2 px-3 rounded-sm shadow-lg"
                             >
                                 <div className="text-sm font-medium text-gray-800 dark:text-white italic">
-                                    By: {(comment.userId as User)?.username === username ? "me" : (comment.userId as User)?.username}
+                                    By: {(comment.userId as User)?.username === session?.user.username ? "me" : (comment.userId as User)?.username}
                                 </div>
 
                                 <div className="text-sm text-gray-700 dark:text-gray-300">
@@ -242,15 +243,15 @@ export default function CommentBox({ noteId, comments, username }: CommentBoxPro
                                 <div className="flex justify-between items-center">
                                     <DateFormat rawDate={comment.createdAt} />
                                     {
-                                        (session && (comment.userId as User)?.username === username) && (
+                                        (session && (comment.userId as User)?.username === session.user.username) && (
                                             <button
                                                 onClick={() => deleteHandler(comment._id as string)}
-                                                disabled={deleteLoader}
+                                                disabled={deletingId === comment._id}
                                                 className="text-[0.9rem] bg-gray-300 px-[4px] py-[1px] rounded-sm border border-black/90 dark:bg-gray-700
                                                     dark:border-white/80 cursor-pointer"
                                             >
                                                 {
-                                                    deleteLoader ? "Please wait" : "Delete"
+                                                    deletingId === comment._id ? "Please wait" : "Delete"
                                                 }
                                             </button>
                                         )
