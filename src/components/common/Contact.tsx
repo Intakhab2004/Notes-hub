@@ -36,11 +36,10 @@ export default function ContactUs(){
 
 
     return (
-        <section className="w-full px-6 py-28 bg-gradient-to-br from-[#ffffff] to-[#afafb1] text-gray-800 dark:from-[#0f0f0f] 
+        <section className="w-full px-3 md:px-6 py-28 bg-gradient-to-br from-[#ffffff] to-[#afafb1] text-gray-800 dark:from-[#0f0f0f] 
             dark:to-[#1f1f1f] dark:text-gray-100 transition-colors duration-500"
         >
-            <h1 className="text-2xl md:text-3xl lg:text-4xl mb-3 font-extrabold bg-gradient-to-r from-blue-500 via-purple-400 to-pink-300 
-                    text-transparent bg-clip-text"
+            <h1 className="text-3xl md:text-4xl lg:text-5xl mb-3 font-extrabold"
             >
                 Contact Us, If you have any query.
             </h1>
@@ -50,7 +49,7 @@ export default function ContactUs(){
 
             <div>
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-10 flex flex-col justify-between space-y-40 border 
+                    <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl px-5 py-10 md:p-10 flex flex-col justify-between space-y-40 border 
                         border-gray-100 dark:border-gray-700 transition-colors duration-300"
                     >
                         <div>
@@ -93,7 +92,7 @@ export default function ContactUs(){
                     <form
                         ref={form}
                         onSubmit={sendEmail}
-                        className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-10 space-y-6 border border-gray-100 
+                        className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl px-5 py-10 md:p-10 space-y-6 border border-gray-100 
                             dark:border-gray-700 transition-colors duration-300"
                     >
                         <div className="flex flex-col gap-2">

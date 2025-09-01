@@ -81,7 +81,8 @@ export default function SummaryBox({fileUrl}: {fileUrl: string}){
             <DialogTrigger asChild>
                 <button
                     onClick={clickHandler}
-                    className="p-3 bg-gradient-to-b from-indigo-300 to to-blue-500 rounded-sm cursor-pointer"
+                     className="px-5 py-3 bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 
+                        text-white font-semibold rounded-xl shadow-md transition-all duration-300"
                 >
                     Summarize the PDF
                 </button>

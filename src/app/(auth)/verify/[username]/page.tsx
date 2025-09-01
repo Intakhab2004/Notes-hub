@@ -1,6 +1,5 @@
 "use client"
 
-
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { verifySchema } from "@/schemas/verifySchema";
@@ -13,7 +12,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-
 
 const VerifyPage = () => {
     const [loader, setLoader] = useState(false);
@@ -97,19 +95,17 @@ const VerifyPage = () => {
 
 
     return (
-        <section className="flex justify-center items-center min-h-screen px-2 bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
-            <div className="w-full max-w-md p-5 md:p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-[#1b1b31] dark:shadow-gray-500">
+        <section className="flex justify-center items-center min-h-screen px-4 bg-gradient-to-b from-[#FAF9EE] to-[#DCCFC0] dark:from-[#0f0f1a] dark:to-[#001f3f] transition-all">
+            <div className="w-full max-w-md p-8 md:p-10 space-y-8 bg-white rounded-3xl shadow-xl dark:bg-[#1b1b31] dark:shadow-black/50">
                 <div className="text-center">
-                    <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-400 text-transparent bg-clip-text 
-                        dark:bg-gradient-to-r dark:from-blue-500 dark:to-white/90 dark:text-transparent dark:bg-clip-text tracking-tight mb-5 leading-none">
+                    <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-green-600 to-green-400 text-transparent bg-clip-text dark:from-green-400 dark:to-green-200 tracking-tight mb-3">
                         Verify Your Account
                     </h1>
-                    <p className="mb-4 text-[1.1rem] font-semibold text-gray-600 dark:text-gray-200">
-                        Enter the verification code sent to your email
+                    <p className="text-gray-700 dark:text-gray-300 font-medium">
+                        Enter the 6-digit verification code sent to your email
                     </p>
                 </div>
 
-                {/* OTP form */}
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
@@ -117,10 +113,12 @@ const VerifyPage = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>6-digit OTP</FormLabel>
+                                    <FormLabel className="font-semibold text-gray-800 dark:text-gray-200">6-digit OTP</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="XXXXXX" 
+                                        <Input
+                                            placeholder="XXXXXX"
                                             {...field}
+                                            className="border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#12122a] text-gray-900 dark:text-gray-100 focus:ring-green-500 focus:border-green-500 rounded-xl"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -131,7 +129,7 @@ const VerifyPage = () => {
                         <button
                             type="submit"
                             disabled={loader}
-                            className="flex items-center cursor-pointer font-semibold border-1 rounded-md py-1 px-4 hover:scale-105 transition-all duration-300 border-gray-400 text-black/90 bg-gradient-to-r from-blue-300 via-indigo-200 to-gray-100 shadow-sm shadow-blue-400"
+                            className="w-full flex justify-center items-center gap-2 py-3 text-lg font-semibold text-white rounded-xl bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 transition-all duration-300 shadow-md shadow-green-300/50"
                         >
                             {
                                 loader ? (

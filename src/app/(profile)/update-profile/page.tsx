@@ -320,7 +320,7 @@ export default function UpdateProfile(){
                 <div className="min-h-full w-full flex flex-col items-center bg-gray-100 dark:bg-gradient-to-b from-[#02051d] to-[#1b1b28] transition-all">
                     {
                         loader ? (
-                            <div className="flex gap-3 items-center mt-60 text-xl font-semibold">
+                            <div className="flex gap-3 items-center mt-60 text-xl font-semibold text-gray-800 dark:text-white">
 								Please wait <Loader2 className="w-8 h-8 animate-spin" />
 							</div>
                         )
@@ -329,33 +329,16 @@ export default function UpdateProfile(){
                             <>
                                 {/* Image upload */}
                                 <div className="w-11/12 md:w-8/12 flex gap-6 md:gap-10 flex-wrap mt-10 md:mt-20">
-                                    <div className="flex gap-6 md:gap-4 items-center w-full p-3 py-5 bg-gray-50 dark:bg-gray-900 border dark:border-gray-700 rounded-md shadow-lg">
+                                    <div className="w-full flex gap-6 flex-wrap mt-10 p-6 bg-gradient-to-r from-[#e4f0e6be] 
+                                        to-[#e6e5dac1] dark:from-[#001f3fb5] dark:to-[#2a22228d] rounded-2xl shadow-lg border 
+                                        border-gray-200 dark:border-gray-700 transition-all"
+                                    >
                                         <div>
-                                            {
-                                                previewURL ? (
-                                                    <img
-                                                        src={previewURL}
-                                                        alt="profile-img"
-                                                        className="w-24 h-24 md:w-32 md:h-32 border border-black dark:border-white rounded-full dark:bg-gradient-to-b dark:from-pink-500 dark:to-indigo-700 bg-gradient-to-b from-blue-500 to-gray-700"
-                                                    />
-                                                )
-                                                :
-                                                userData?.image ? (
-                                                    <img
-                                                        src={userData?.image}
-                                                        alt="profile-img"
-                                                        className="w-24 h-24 md:w-32 md:h-32 border border-black dark:border-white rounded-full dark:bg-gradient-to-b dark:from-pink-500 dark:to-indigo-700 bg-gradient-to-b from-blue-500 to-gray-700"
-                                                    />
-                                                )
-                                                :
-                                                (
-                                                    <img
-                                                        src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${userData?.username}`}
-                                                        alt="profile-img"
-                                                        className="w-24 h-24 md:w-32 md:h-32 border border-black dark:border-white rounded-full dark:bg-gradient-to-b dark:from-pink-500 dark:to-indigo-700 bg-gradient-to-b from-blue-500 to-gray-700"
-                                                    />
-                                                ) 
-                                            }
+                                            <img
+                                                src={previewURL || userData?.image || `https://api.dicebear.com/9.x/adventurer/svg?seed=${userData?.username}`}
+                                                alt="profile-img"
+                                                className="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-green-600 dark:border-green-400 object-cover"
+                                            />
                                         </div>
                                         <div>
                                             <h1 className="text-base font-semibold mb-2">
@@ -425,7 +408,7 @@ export default function UpdateProfile(){
                             
                                 {/* Update details form */}
                                 <div className="w-11/12 md:w-8/12 flex gap-6 md:gap-10 flex-wrap my-10 md:my-20">
-                                    <div className="w-full py-10 px-3 md:px-6 bg-gray-50 dark:bg-gray-900 border dark:border-gray-700 rounded-md shadow-lg">
+                                    <div className="w-full py-10 px-3 md:px-6 bg-gray-100 dark:bg-gray-900 border dark:border-gray-700 rounded-md shadow-lg">
                                         <h2 className="text-2xl font-semibold mb-6">
                                             Update Personal Details
                                         </h2>
@@ -592,7 +575,8 @@ export default function UpdateProfile(){
 
                                                 <button
                                                     type="submit"
-                                                    className="px-4 py-[0.25rem] mt-7 text-[0.9rem] dark:bg-gray-800 bg-gray-300 font-medium border border-gray-400 dark:border-gray-600 rounded-sm cursor-pointer"
+                                                    className="font-semibold py-1 px-4 mt-7 rounded-lg text-white bg-green-600 cursor-pointer 
+                                                        hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-300"
                                                 >
                                                     {
                                                         submitDetailsLoader ? (
@@ -613,52 +597,30 @@ export default function UpdateProfile(){
                     }
                     {
                         !loader && (
-                            <div className="w-11/12 md:w-8/12 p-3 py-6 md:p-8 flex items-start gap-6 md:gap-10 mb-16 bg-red-300 dark:bg-[#4b0000cf] border border-red-700 dark:border-red-600 rounded-sm">
-                                <div className="p-3 bg-red-400 dark:bg-red-300 rounded-full">
-                                    <RiDeleteBin6Line className="text-red-800 w-8 h-8"/>
+                            <div className="w-full max-w-3xl mb-20 p-6 flex items-start gap-4 bg-red-100 dark:bg-red-900 border border-red-600 dark:border-red-700 rounded-lg shadow-md">
+                                <div className="p-3 bg-red-500 dark:bg-red-400 rounded-full">
+                                    <RiDeleteBin6Line className="text-white w-6 h-6"/>
                                 </div>
-                                <div className="md:w-3/4">
-                                    <h1 className="text-[1.1rem] font-bold text-black dark:text-white mb-1">
-                                        Delete Account
-                                    </h1>
-                                    <h3 className="text-[1.2rem] font-medium text-red-700 dark:text-red-200 mb-2">
-                                        Would you like to delete account?
-                                    </h3>
-                                    <h3 className="text-base font-medium text-red-700 dark:text-red-200 mb-3">
-                                        Deleting your account is permanent and will remove all your uploaded content permanently from the server.
-                                    </h3>
-                                    <AlertDialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+                                <div className="flex-1">
+                                    <h1 className="text-lg font-bold text-red-700 dark:text-white">Delete Account</h1>
+                                    <p className="text-sm text-red-800 dark:text-red-200 my-2">
+                                        Deleting your account is permanent and will remove all your uploaded content.
+                                    </p>
+                                    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                                         <AlertDialogTrigger asChild>
-                                            <button className="text-red-950 dark:text-black font-semibold italic cursor-pointer">
-                                                I want to delete my account
-                                            </button>
+                                            <button className="text-red-700 dark:text-red-200 font-semibold italic underline">I want to delete my account</button>
                                         </AlertDialogTrigger>
                                         <AlertDialogContent>
                                             <AlertDialogHeader>
                                                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                                                 <AlertDialogDescription>
-                                                    This action cannot be undone. This will permanently delete your
-                                                    account and delete all of your content.
+                                                    This action cannot be undone. This will permanently delete your account and all your content.
                                                 </AlertDialogDescription>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel disabled={deleteLoader}>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction 
-                                                    onClick={async(event) => {
-                                                        event.preventDefault();
-                                                        await handleAccountDelete();
-                                                    }} 
-                                                    disabled={deleteLoader}
-                                                >
-                                                    {
-                                                        deleteLoader ? (
-                                                            <div className="flex items-center">
-                                                                <Loader2 className="mr-2 h-5 w-5 animate-spin"/> Please wait
-                                                            </div>
-                                                        )
-                                                        :
-                                                        "Continue"
-                                                    }
+                                                <AlertDialogAction onClick={handleAccountDelete} disabled={deleteLoader}>
+                                                    {deleteLoader ? <Loader2 className="h-5 w-5 animate-spin"/> : "Continue"}
                                                 </AlertDialogAction>
                                             </AlertDialogFooter>
                                         </AlertDialogContent>

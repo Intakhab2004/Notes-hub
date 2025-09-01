@@ -14,16 +14,12 @@ import { toast } from "sonner"
 import { signIn } from "next-auth/react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
-
-export default function SigninPage(){
+export default function SigninPage() {
     const [loader, setLoader] = useState(false);
     const [alertBox, setAlertBox] = useState(false);
     const router = useRouter();
 
-
-
-
-    const form = useForm<z.infer <typeof signInSchema>>({
+    const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
             identifier: "",
@@ -31,25 +27,18 @@ export default function SigninPage(){
         }
     })
 
-
-
-    const onSubmit = async(data: z.infer<typeof signInSchema>) => {
+    const onSubmit = async (data: z.infer<typeof signInSchema>) => {
         setLoader(true);
-        try{
-            if(!data.identifier || !data.password){
+        try {
+            if (!data.identifier || !data.password) {
                 const toastId = toast(
                     "Please fill all the details carefully",
                     {
                         description: "All fields are mandatory",
-                        action: {
-                            label: "Dismiss",
-                            onClick: () => {
-                                toast.dismiss(toastId);
-                            }
-                        }
+                        action: { label: "Dismiss", onClick: () => toast.dismiss(toastId) }
                     }
                 )
-                return ;
+                return;
             }
 
             const result = await signIn("credentials", {
@@ -58,106 +47,79 @@ export default function SigninPage(){
                 password: data.password
             })
 
-            if(result?.error){
-                if(result.error === "Please verify your account before login"){
+            if (result?.error) {
+                if (result.error === "Please verify your account before login") {
                     setAlertBox(true);
-                }
-                else{
+                } else {
                     const toastId = toast(
                         "Something went wrong",
-                        {
-                            description: result.error,
-                            action: {
-                                label: "Dismiss",
-                                onClick: () => {
-                                    toast.dismiss(toastId);
-                                }
-                            }
-                        }
+                        { description: result.error, action: { label: "Dismiss", onClick: () => toast.dismiss(toastId) } }
                     )
                 }
             }
 
-            if(result?.url){
-                console.log("NEW URL", result.url);
+            if (result?.url) {
                 router.replace("/profile");
             }
-        }
-
-        catch(error){
-            if(error instanceof Error){
-                console.log("Something went wrong while signup: ", error.message);
-            }
-            else{
-                console.log("An unknown error: ", error);
-            }
-            
+        } catch (error) {
+            console.log("An error occurred: ", error);
             const toastId = toast(
-                "Something went wrong while signing up",
-                {
-                    description: "Please try again",
-                    action: {
-                        label: "Dismiss",
-                        onClick: () => {
-                            toast.dismiss(toastId);
-                        }
-                    }
-                }
+                "Something went wrong",
+                { description: "Please try again", action: { label: "Dismiss", onClick: () => toast.dismiss(toastId) } }
             )
-        }
-
-        finally{
+        } finally {
             setLoader(false);
         }
     }
 
-
-
     return (
-        <section className="min-h-screen px-2 flex justify-center items-center bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
-            {
-                alertBox && (
-                    <div className="fixed inset-0 bg-black/40 backdrop-blur z-20 flex items-center justify-center">
-                        <Alert variant="destructive" className="absolute z-50 top-70 w-full max-w-md">
-                            <AlertCircleIcon />
-                            <AlertTitle>Please verify your email before login</AlertTitle>
-                            <AlertDescription>
-                                You need to Sign up again to get the verification code.
-                                <button 
-                                    className="flex items-center cursor-pointer mt-2 font-semibold border-1 rounded-md py-1 px-4 transition-all duration-300 border-red-400 text-red-500 bg-red-200"
-                                    onClick={() => {setAlertBox(false)}}
-                                >
-                                    Dismiss
-                                </button>
-                            </AlertDescription>
-                        </Alert>
-                    </div>
-                )
-            }
-            <div className="w-full max-w-lg p-5 md:p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-[#1b1b31] dark:shadow-gray-500">
+        <section className="min-h-screen flex justify-center items-center bg-gradient-to-b from-[#FAF9EE] to-[#DCCFC0] dark:from-[#0f0f1a] dark:to-[#001f3f] transition-all">
+            {alertBox && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur z-20 flex items-center justify-center">
+                    <Alert variant="destructive" className="absolute z-50 w-full max-w-md p-4">
+                        <div className="flex items-start gap-2">
+                            <AlertCircleIcon className="mt-1" />
+                            <div>
+                                <AlertTitle>Please verify your email before login</AlertTitle>
+                                <AlertDescription>
+                                    You need to Sign up again to get the verification code.
+                                    <button
+                                        className="mt-2 px-4 py-2 rounded-lg font-semibold text-red-700 bg-red-200 hover:bg-red-300 transition"
+                                        onClick={() => setAlertBox(false)}
+                                    >
+                                        Dismiss
+                                    </button>
+                                </AlertDescription>
+                            </div>
+                        </div>
+                    </Alert>
+                </div>
+            )}
+
+            <div className="w-full max-w-md p-8 md:p-10 space-y-8 bg-white rounded-3xl shadow-xl dark:bg-[#1b1b31] dark:shadow-black/50">
                 <div className="text-center">
-                    <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-400 text-transparent bg-clip-text 
-                        dark:bg-gradient-to-r dark:from-blue-500 dark:to-white/90 dark:text-transparent dark:bg-clip-text tracking-tight mb-5"
-                    >
+                    <h1 className="text-5xl font-extrabold bg-gradient-to-r from-green-600 to-green-400 text-transparent bg-clip-text dark:from-green-400 dark:to-green-200">
                         NotesHub
                     </h1>
-                    <p className="mb-4 text-[1.1rem] font-semibold text-gray-600 dark:text-gray-200">
+                    <p className="mt-2 text-gray-700 dark:text-gray-300 font-medium">
                         A Smarter Way to Study and Share.
                     </p>
                 </div>
 
-                {/* Login form */}
+                {/* Login Form */}
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
                             control={form.control}
                             name="identifier"
-                            render={({field}) => (
+                            render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email / Username</FormLabel>
+                                    <FormLabel className="font-semibold text-gray-800 dark:text-gray-200">Email / Username</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Email / Username" 
-                                            {...field} 
+                                        <Input
+                                            placeholder="Email / Username"
+                                            {...field}
+                                            className="border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#12122a] text-gray-900 dark:text-gray-100 focus:ring-green-500 focus:border-green-500 rounded-xl"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -168,12 +130,15 @@ export default function SigninPage(){
                         <FormField
                             control={form.control}
                             name="password"
-                            render={({field}) => (
+                            render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel className="font-semibold text-gray-800 dark:text-gray-200">Password</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Enter your Password" type="password"
-                                            {...field} 
+                                        <Input
+                                            type="password"
+                                            placeholder="Enter your password"
+                                            {...field}
+                                            className="border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#12122a] text-gray-900 dark:text-gray-100 focus:ring-green-500 focus:border-green-500 rounded-xl"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -184,27 +149,18 @@ export default function SigninPage(){
                         <button
                             type="submit"
                             disabled={loader}
-                            className="flex items-center cursor-pointer font-semibold border-1 rounded-md py-1 px-4 hover:scale-105 transition-all duration-300 border-gray-400 text-black/90 bg-gradient-to-r from-blue-300 via-indigo-200 to-gray-100 shadow-sm shadow-blue-400"
+                            className="w-full flex justify-center items-center gap-2 py-3 text-lg font-semibold text-white rounded-xl bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 transition-all duration-300 shadow-md shadow-green-300/50"
                         >
-                            {
-                                loader ? (
-                                            <>
-                                                <Loader2 className="mr-2 h-5 w-5 animate-spin"/> Please wait
-                                            </>
-                                            ) : 
-                                            ("Submit")
-                            }
+                            {loader ? <><Loader2 className="h-5 w-5 animate-spin"/> Please wait</> : "Sign In"}
                         </button>
                     </form>
 
-                    <div className="text-center mt-2">
-                        <p>
-                            New to NotesHub? {'  '}
-                            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
-                                Sign up
-                            </Link>
-                        </p>
-                    </div>
+                    <p className="text-center mt-4 text-gray-600 dark:text-gray-300">
+                        New to NotesHub?{' '}
+                        <Link href="/sign-up" className="text-green-600 dark:text-green-400 hover:underline">
+                            Sign up
+                        </Link>
+                    </p>
                 </Form>
             </div>
         </section>

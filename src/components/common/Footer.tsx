@@ -3,76 +3,75 @@
 import Link from "next/link";
 import { FaEnvelope, FaGithub, FaLinkedin, FaPhoneAlt } from "react-icons/fa";
 
-
-export default function Footer(){
+export default function Footer() {
     return (
-        <footer className="w-full bg-gradient-to-b from-blue-900 to-black text-white transition-colors">
+        <footer className="w-full bg-gradient-to-r from-[#FAF9EE] to-[#e1dfc5] dark:from-[#001f3f] dark:to-[#272525] text-gray-900 dark:text-gray-200 transition-colors duration-500">
             <div className="max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-between items-start space-y-12 md:space-y-0 md:gap-10">
                 <div className="flex flex-col space-y-4 w-full md:w-1/4">
-                    <h3 className="text-3xl font-bold text-white">
+                    <h3 className="text-3xl font-bold text-gray-900 dark:text-green-400">
                         NotesHub
                     </h3>
-                    <p className="text-gray-400 text-sm">
-                        Notes | Previous Year Questions | Test Series | Learning Platform
+                    <p className="text-gray-700 dark:text-gray-400 text-sm">
+                        Curated Notes | Previous Year Questions | Mock Tests | Learning Platform
                     </p>
                 </div>
 
                 <div className="flex flex-col space-y-4 w-full md:w-1/4">
-                    <h3 className="text-xl font-semibold text-white">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-green-400">
                         Quick Links
                     </h3>
-                    <ul className="space-y-2 text-gray-400">
+                    <ul className="space-y-2 text-gray-700 dark:text-gray-400">
                         <li>
-                            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                            <Link href="/" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">Home</Link>
                         </li>
                         <li>
-                            <Link href="/notes-collections" className="hover:text-white transition-colors">Notes</Link>
+                            <Link href="/notes-collections" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">Notes</Link>
                         </li>
                         <li>
-                            <Link href="/about" className="hover:text-white transition-colors">About</Link>
+                            <Link href="/about" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">About</Link>
                         </li>
                         <li>
-                            <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+                            <Link href="/contact" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">Contact</Link>
                         </li>
                     </ul>
                 </div>
 
                 <div className="flex flex-col space-y-4 w-full md:w-1/4">
-                    <h4 className="text-xl font-semibold text-white">
+                    <h4 className="text-xl font-semibold text-gray-900 dark:text-green-400">
                         Contact
                     </h4>
                     <a
                         href="mailto:ikbalam4648@gmail.com"
-                        className="flex items-center text-gray-400 hover:text-white transition-colors"
+                        className="flex items-center text-gray-700 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                     >
-                        <FaEnvelope className="text-blue-400 mr-3" />
+                        <FaEnvelope className="text-green-600 dark:text-green-400 mr-3" />
                         <span>ikbalam4648@gmail.com</span>
                     </a>
                     <a
                         href="tel:+919472XXXXXX"
-                        className="flex items-center text-gray-400 hover:text-white transition-colors"
+                        className="flex items-center text-gray-700 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                     >
-                        <FaPhoneAlt className="text-blue-400 mr-3" />
+                        <FaPhoneAlt className="text-green-600 dark:text-green-400 mr-3" />
                         <span>+91 9472XXXXXX</span>
                     </a>
                 </div>
 
                 <div className="flex flex-col space-y-4 w-full md:w-1/4">
-                    <h4 className="text-xl font-semibold text-white">
+                    <h4 className="text-xl font-semibold text-gray-900 dark:text-green-400">
                         Follow Me
                     </h4>
-                    <div className="flex space-x-4 text-gray-400 text-2xl">
+                    <div className="flex space-x-4 text-gray-700 dark:text-gray-400 text-2xl">
                         <a
                             href="https://github.com/Intakhab2004" 
                             target="_blank"
-                            className="hover:text-white transition-all duration-300 transform hover:scale-110"
+                            className="hover:text-green-600 dark:hover:text-green-400 transition-all duration-300 transform hover:scale-110"
                         >
                             <FaGithub/>
                         </a>
                         <a
                             href="https://www.linkedin.com/in/intakhab-alam-996a1b323" 
                             target="_blank"
-                            className="hover:text-white transition-all duration-300 transform hover:scale-110"
+                            className="hover:text-green-600 dark:hover:text-green-400 transition-all duration-300 transform hover:scale-110"
                         >
                             <FaLinkedin/>
                         </a>
@@ -80,10 +79,9 @@ export default function Footer(){
                 </div>
             </div>
 
-            <div className="border-t border-gray-700 py-6 text-center text-gray-500 text-sm">
+            <div className="border-t border-gray-300 dark:border-gray-700 py-6 text-center text-gray-600 dark:text-gray-400 text-sm">
                 &copy; {new Date().getFullYear()} Intakhab Alam. All rights reserved.
             </div>
         </footer>
     )
 }
-

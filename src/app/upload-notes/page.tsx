@@ -129,188 +129,181 @@ const UploadNotes = () => {
 				<Sidebar/>
 
 				{/* Main container */}
-				<div className="min-h-full w-full flex flex-col items-center p-2 md:pr-35 bg-gray-100 dark:bg-gradient-to-b from-[#161516] to-[#01012e] transition-all">
+				<div className="min-h-full w-full flex flex-col items-center p-2 md:pr-35 bg-[#FAF9EE] dark:bg-[#001f3f] transition-all">
 					<h1 className="text-2xl md:text-3xl lg:text-3xl font-bold pt-12">
 						Upload your Notes here
 					</h1>
 
 					{/* Notes upload form */}
-					<div className="w-full max-w-2xl p-5 md:p-8 my-12 mb-30 space-y-8 bg-white rounded-lg shadow-md dark:bg-[#1b1b31] dark:shadow-gray-500">
+					<div className="w-full max-w-2xl p-6 md:p-10 my-12 mb-18 space-y-8 bg-white dark:bg-[#1b1b31] rounded-2xl shadow-lg dark:shadow-gray-700 border border-gray-200 dark:border-gray-600 transition-all duration-300">
 						<Form {...form}>
 							<form onSubmit={form.handleSubmit(submitHandler)} className="space-y-6">
+
+								{/* Title */}
 								<FormField
 									control={form.control}
 									name="title"
 									render={({field}) => (
 										<FormItem>
-											<FormLabel>Title</FormLabel>
-												<FormControl>
-													<Input placeholder="Title of notes"
-														{...field} 
-													/>
-												</FormControl>
+											<FormLabel className="font-semibold text-gray-800 dark:text-gray-200">Title</FormLabel>
+											<FormControl>
+												<Input
+													placeholder="Title of notes"
+													{...field}
+													className="bg-gray-50 dark:bg-[#2a2a3b] border border-gray-300 dark:border-gray-600 text-black dark:text-white rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
+												/>
+											</FormControl>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
 
+								{/* Description */}
 								<FormField
 									control={form.control}
 									name="description"
 									render={({field}) => (
 										<FormItem>
-											<FormLabel>Description</FormLabel>
-												<FormControl>
-													<Textarea placeholder="Write about notes" rows={4}
-														{...field} 
-													/>
-												</FormControl>
+											<FormLabel className="font-semibold text-gray-800 dark:text-gray-200">Description</FormLabel>
+											<FormControl>
+												<Textarea
+													placeholder="Write about notes"
+													rows={4}
+													{...field}
+													className="bg-gray-50 dark:bg-[#2a2a3b] border border-gray-300 dark:border-gray-600 text-black dark:text-white rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
+												/>
+											</FormControl>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
 
+								{/* Tags */}
 								<FormField
 									control={form.control}
 									name="tags"
 									render={({field}) => (
 										<FormItem>
-											<FormLabel>Tags</FormLabel>
-												<FormControl>
-													<TagsInput value={field.value} onChange={field.onChange}/>
-												</FormControl>
+											<FormLabel className="font-semibold text-gray-800 dark:text-gray-200">Tags</FormLabel>
+											<FormControl>
+												<TagsInput value={field.value} onChange={field.onChange} />
+											</FormControl>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
 
+								{/* Subject */}
 								<FormField
 									control={form.control}
 									name="subject"
 									render={({field}) => (
 										<FormItem>
-											<FormLabel>Subject</FormLabel>
-												<FormControl>
-													<Input placeholder="Subject"
-														{...field} 
-													/>
-												</FormControl>
+											<FormLabel className="font-semibold text-gray-800 dark:text-gray-200">Subject</FormLabel>
+											<FormControl>
+												<Input
+													placeholder="Subject"
+													{...field}
+													className="bg-gray-50 dark:bg-[#2a2a3b] border border-gray-300 dark:border-gray-600 text-black dark:text-white rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
+												/>
+											</FormControl>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
 
+								{/* File Upload */}
 								<FormField
 									control={form.control}
 									name="file"
 									render={({ field: { onChange, ref } }) => (
 										<FormItem>
-										<FormLabel>Upload File</FormLabel>
-										<FormControl>
-											<div>
-												<input
-													type="file"
-													accept=".pdf,.jpg,.jpeg,.png,.webp"
-													onChange={(e) => {
-														const file = e.target.files?.[0];
-														if(file){
-															onChange(e.target.files); // update form state
-															setFileName(file.name);
-															const previewUrl = URL.createObjectURL(file);
-															setPreviewURL(previewUrl);
-														}
-													}}
-													ref={ref}
-													className="hidden"
-													id="file-upload"
-												/>
+											<FormLabel className="font-semibold text-gray-800 dark:text-gray-200">Upload File</FormLabel>
+											<FormControl>
+												<div>
+													<input
+														type="file"
+														accept=".pdf,.jpg,.jpeg,.png,.webp"
+														onChange={(e) => {
+															const file = e.target.files?.[0]
+															if(file){
+																onChange(e.target.files)
+																setFileName(file.name)
+																const previewUrl = URL.createObjectURL(file)
+																setPreviewURL(previewUrl)
+															}
+														}}
+														ref={ref}
+														className="hidden"
+														id="file-upload"
+													/>
 
-												{/* Custom clickable upload area */}
-												<label
-													htmlFor="file-upload"
-													className="h-80 w-full md:w-1/2 border border-gray-700 dark:border-white rounded-md flex 
-														items-center justify-center bg-white dark:bg-gray-800 cursor-pointer hover:bg-gray-100 
-														transition-all duration-200 overflow-hidden"
-												>
-													{
-														previewURL ? 
-														(
-															fileName.match(/\.(jpg|jpeg|png|webp)$/i) ? 
-																	(
-																		<img
-																			src={previewURL}
-																			alt="Preview"
-																			className="object-contain h-full w-full"
-																		/>
-																	) : fileName.endsWith(".pdf") ? 
-																	(
-																		<iframe
-																			src={previewURL}
-																			className="w-full h-full border-none"
-																		/>
-																	) : 
-																	(
-																		<p className="text-sm text-yellow-500">
-																			Preview not supported for this file type.
+													{/* Upload Area */}
+													<label
+														htmlFor="file-upload"
+														className="h-80 w-full md:w-1/2 border-2 border-dashed rounded-xl flex items-center justify-center cursor-pointer overflow-hidden bg-gray-50 dark:bg-[#2a2a3b] hover:shadow-lg transition-all duration-300"
+													>
+														{
+															previewURL ? (
+																fileName.match(/\.(jpg|jpeg|png|webp)$/i) ? (
+																	<img src={previewURL} alt="Preview" className="object-contain h-full w-full" />
+																) 
+																: 
+																fileName.endsWith(".pdf") ? (
+																	<iframe src={previewURL} className="w-full h-full border-none" />
+																) 
+																: 
+																(
+																	<p className="text-sm text-yellow-500">Preview not supported</p>
+																)
+															) : (
+																<div className="flex flex-col items-center justify-center">
+																	<CloudUpload size={50} className="text-green-600 dark:text-green-400 mb-3"/>
+																	<p className="font-semibold text-gray-700 dark:text-gray-200">
+																		Choose a file
+																	</p>
+																	<div className="flex flex-col items-center text-xs text-gray-500 dark:text-gray-400 mt-1">
+																		<p>
+																			.pdf | .jpg | .jpeg | .png | .webp
 																		</p>
-																	)
-														) 
-														: 
-														(
-															<div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-t from-black/10
-																 to-blue-100 dark:bg-gradient-to-t dark:from-black/60 dark:to-blue-950"
-															>
-																<p className="text-lg font-bold ">Choose a file</p>
-																<CloudUpload size={50} className="text-blue-600 dark:text-yellow-300"/>
-																<p className="font-semibold">
-																	Supported file types are
-																</p>
-																<p className="text-[0.6rem] font-bold">
-																	.pdf | .jpg | .jpeg | .png | .webp
-																</p>
-															</div>
-														)
-													}
-												</label>
-											</div>
-										</FormControl>
+																		<p>
+																			Max Upload size is 10 MB
+																		</p>
+																	</div>
+																</div>
+															)
+														}
+													</label>
+												</div>
+											</FormControl>
 
-										{
-											fileName && (
+											{fileName && (
 												<div className="mt-3 flex flex-col md:flex-row md:items-center md:gap-4">
-													<p className="text-sm text-muted-foreground mt-2">
+													<p className="text-sm text-gray-700 dark:text-gray-300">
 														Selected file: <strong>{fileName}</strong>
 													</p>
 
 													<button
 														type="button"
 														onClick={() => document.getElementById("file-upload")?.click()}
-														className="mt-2 md:mt-0 px-4 py-2 text-sm font-medium text-black/90 border-1 border-black/80 bg-gradient-to-r from-blue-300 
-															to-gray-100 cursor-pointer rounded-sm"
+														className="mt-2 md:mt-0 px-4 py-2 text-sm font-medium rounded-lg shadow bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 transition-all duration-300"
 													>
 														Change File
 													</button>
 												</div>
-											)
-										}
-										<FormMessage />
+											)}
+											<FormMessage />
 										</FormItem>
 									)}
 								/>
 
+								{/* Submit Button */}
 								<button
 									type="submit"
 									disabled={loader}
-									className="flex items-center cursor-pointer font-semibold border-1 rounded-md py-1 px-4 hover:scale-105 transition-all duration-300 border-gray-400 text-black/90 bg-gradient-to-r from-blue-300 via-indigo-200 to-gray-100 shadow-sm shadow-blue-400"
+									className="w-full flex justify-center items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold rounded-xl shadow-lg transition-all duration-300"
 								>
-									{
-										loader ? (
-													<>
-														<Loader2 className="mr-2 h-5 w-5 animate-spin"/> Please wait
-													</>
-													) : 
-													("Submit")
-									}
+									{loader ? <><Loader2 className="animate-spin"/> Please wait</> : "Submit"}
 								</button>
 							</form>
 						</Form>

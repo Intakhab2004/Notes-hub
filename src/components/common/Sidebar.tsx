@@ -10,23 +10,24 @@ const Sidebar = () => {
 	const pathName = usePathname();
 	const {data: session} = useSession();
 
-
 	return (
-		<div className="hidden md:flex flex-col min-h-full w-60 bg-gradient-to-l from-purple-100 to-white dark:bg-gradient-to-r dark:from-black/70 dark:to-blue-950 shadow-2xl">
-			<nav className="flex flex-col p-6 gap-2">
+		<div className="hidden md:flex flex-col min-h-full w-64 bg-gradient-to-r from-[#FAF9EE] to-[#e1dfc5] dark:from-[#001f3f] dark:to-[#272525] shadow-2xl overflow-hidden">
+			<nav className="flex flex-col pt-12 pb-3 gap-2">
 				{
 					!session && (
 						<Link 
 							href="/" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md`}
+							className={`flex gap-3 items-center font-semibold py-1 px-3 rounded-lg transition-all duration-300
+								hover:bg-green-100 dark:hover:bg-green-900 text-gray-900 dark:text-gray-200`}
 						>
-							<FaHome /> Home
+							<FaHome className="w-5 h-5"/> Home
 						</Link>
 					)
 				}
 				<Link 
 					href="/notes-collections" 
-					className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/notes-collections" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
+					className={`flex gap-3 items-center font-semibold py-1 px-3 rounded-lg transition-all duration-300
+						${pathName === "/notes-collections" ? "bg-green-600 text-white shadow-md" : "hover:bg-green-100 dark:hover:bg-green-900 text-gray-900 dark:text-gray-200"}`}
 				>
 					<NotebookText className='w-5 h-5' /> Notes
 				</Link>
@@ -34,7 +35,8 @@ const Sidebar = () => {
 					session && (
 						<Link 
 							href="/profile" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/profile" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
+							className={`flex gap-3 items-center font-semibold py-1 px-3 rounded-lg transition-all duration-300
+								${pathName === "/profile" ? "bg-green-600 text-white shadow-md" : "hover:bg-green-100 dark:hover:bg-green-900 text-gray-900 dark:text-gray-200"}`}
 						>	
 							<LayoutDashboard className='w-5 h-5' /> My Profile
 						</Link>
@@ -44,7 +46,8 @@ const Sidebar = () => {
 					session && (
 						<Link 
 							href="/dashboard" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/dashboard" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
+							className={`flex gap-3 items-center font-semibold py-1 px-3 rounded-lg transition-all duration-300
+								${pathName === "/dashboard" ? "bg-green-600 text-white shadow-md" : "hover:bg-green-100 dark:hover:bg-green-900 text-gray-900 dark:text-gray-200"}`}
 						>	
 							<StickyNote className='w-5 h-5' /> My Notes
 						</Link>
@@ -54,22 +57,26 @@ const Sidebar = () => {
 					session && (
 						<Link 
 							href="/upload-notes" 
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/upload-notes" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
+							className={`flex gap-3 items-center font-semibold py-1 px-3 rounded-lg transition-all duration-300
+								${pathName === "/upload-notes" ? "bg-green-600 text-white shadow-md" : "hover:bg-green-100 dark:hover:bg-green-900 text-gray-900 dark:text-gray-200"}`}
 						>
 							<UploadIcon className='w-5 h-5'/> Upload Notes
 						</Link>
 					)
 				}
 			</nav>
-			<div className="w-10/12  h-[1px] mb-3 bg-gray-400 dark:text-gray-400"></div>
-			<div className="flex flex-col px-6 py-3">
+
+			<div className="w-10/12 h-[1px] my-2 bg-gray-300 dark:bg-gray-700 mx-auto"></div>
+
+			<div className="flex flex-col gap-2">
 				{
 					session && (
 						<Link 
 							href="/update-profile"
-							className={`flex gap-2 items-center text-black dark:text-white font-medium py-1 px-2 ${pathName === "/update-profile" ? "rounded-sm text-blue-600 dark:bg-gray-600 bg-gray-200 shadow-lg" : "hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"}`}
+							className={`flex gap-3 items-center font-semibold py-1 px-3 rounded-lg transition-all duration-300
+								${pathName === "/update-profile" ? "bg-green-600 text-white shadow-md" : "hover:bg-green-100 dark:hover:bg-green-900 text-gray-900 dark:text-gray-200"}`}
 						>
-							<Settings className='w-5 h-5'/> Setting
+							<Settings className='w-5 h-5'/> Settings
 						</Link>
 					)
 				}
@@ -77,7 +84,7 @@ const Sidebar = () => {
 					session && (
 						<button 
 							onClick={() => signOut({callbackUrl: "/"})} 
-							className="flex gap-2 items-center text-gray-500 dark:text-gray-400 font-medium py-1 px-2 cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-800 rounded-md"
+							className="flex gap-3 items-center font-semibold py-1 px-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-900 transition-all duration-300"
 						>
 							<LogOut className='w-5 h-5'/> Logout
 						</button>
