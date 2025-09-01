@@ -23,7 +23,7 @@ export default function PdfViewer({fileUrl}: {fileUrl: string}){
         <div className="flex flex-col w-full h-full">
             <div className="h-[14rem] md:h-[50rem] w-full rounded-md border dark:border-gray-700 overflow-hidden shadow-md">
                 <Worker 
-                    workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                    workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
                     <Viewer 
                         fileUrl={fileUrl}
                         plugins={[ zoomPluginInstance, pageNavigationPluginInstance, getFilePluginInstance ]}
