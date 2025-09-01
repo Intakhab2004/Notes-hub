@@ -37,15 +37,18 @@ export default function NotesCollections() {
 				setLoader(true);
 				const result = await axios.get("/api/upload-notes");
 
-				if (!result.data.success) {
+				if(!result.data.success){
 					toast.error("Something went wrong while fetching the notes");
-				} else {
+				} 
+                else {
 					setNotes(result.data.notesResult);
 					setFilteredNotes(result.data.notesResult);
 				}
-			} catch (error) {
+			} 
+            catch(error: unknown){
 				toast.error("Internal server error. Please try again.");
-			} finally {
+			} 
+            finally{
 				setLoader(false);
 			}
 		};

@@ -180,7 +180,7 @@ export default function Home() {
 						testimonials.map((t, index) => (
 							<div key={index} className="p-6 rounded-xl bg-[#EEEEEE] dark:bg-[#001f3f] shadow-md hover:shadow-lg transition-all duration-300">
 								<p className="text-gray-700 dark:text-gray-300 italic">
-									"{t.feedback}"
+									{`"${t.feedback}"`}
 								</p>
 								<h4 className="mt-4 font-bold text-gray-900 dark:text-green-400">
 									{t.name}

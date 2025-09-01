@@ -190,7 +190,7 @@ export async function PUT(request: NextRequest){
 }
 
 
-export async function DELETE(request: NextRequest){
+export async function DELETE(){
     const session = await getServerSession(auhtOptions);
     if(!session || !session.user){
         console.log("User not logged in");
