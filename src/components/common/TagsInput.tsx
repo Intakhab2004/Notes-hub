@@ -41,12 +41,27 @@ export default function TagsInput({value, onChange}: tagInputProps){
                     ))
                 }
             </div>
-            <Input
-                placeholder="Add a tag..."
-                value={inputVal}
-                onChange={(e) => setInputVal(e.target.value)}
-                onKeyDown={handleAddTag}
-            />
+            <div className="flex gap-2">
+                <Input
+                    placeholder="Add a tag..."
+                    value={inputVal}
+                    onChange={(e) => setInputVal(e.target.value)}
+                    onKeyDown={handleAddTag}
+                    onKeyUp={handleAddTag}
+                />
+                <button
+                    type="button"
+                    className="px-3 py-1 bg-blue-600 text-white rounded"
+                    onClick={() => {
+                        if(inputVal.trim() !== "" && !value.includes(inputVal.trim())){
+                            onChange([...value, inputVal.trim()]);
+                            setInputVal("");
+                        }
+                    }}
+                >
+                    Add
+                </button>
+            </div>
         </div>
     )
 }
