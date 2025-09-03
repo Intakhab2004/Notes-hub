@@ -36,8 +36,8 @@ export default function ContactUs(){
 
 
     return (
-        <section className="w-full px-3 md:px-6 py-28 bg-gradient-to-br from-[#ffffff] to-[#afafb1] text-gray-800 dark:from-[#0f0f0f] 
-            dark:to-[#1f1f1f] dark:text-gray-100 transition-colors duration-500"
+        <section className="w-full px-3 md:px-6 py-28 bg-gradient-to-r from-[#ded7bd70] to-[#d1d1cd2b] dark:from-[#001f3f] dark:to-[#001f3fa5]
+             dark:text-gray-100 transition-colors duration-500"
         >
             <h1 className="text-3xl md:text-4xl lg:text-5xl mb-3 font-extrabold"
             >

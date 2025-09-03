@@ -15,7 +15,7 @@ export default function NoteCard({ note }: { note: Notes }) {
 	return (
 		<div
 			onClick={() => router.push(`/notes/${note._id}`)}
-			className="group w-[160px] md:w-[280px] bg-gradient-to-br from-[#FAF9EE] to-[#DCCFC0] dark:from-[#001f3f] dark:to-[#2a2a2a]
+			className="group w-[10rem] md:w-[13rem] lg:w-[17rem] bg-gradient-to-br from-[#FAF9EE] to-[#DCCFC0] dark:from-[#001f3f] dark:to-[#2a2a2a]
 				rounded-3xl shadow-lg hover:shadow-2xl hover:scale-105 overflow-hidden flex flex-col transition-all duration-300 cursor-pointer"
 		>
 			<div className="relative w-full h-28 md:h-36 bg-gray-100 dark:bg-gray-700 overflow-hidden">
