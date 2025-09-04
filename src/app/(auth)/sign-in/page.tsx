@@ -142,6 +142,12 @@ export default function SigninPage() {
                                         />
                                     </FormControl>
                                     <FormMessage />
+                                    <Link
+                                        href="/forgot-password"
+                                        className="text-right -mt-2 text-sm text-blue-600 dark:text-blue-400 cursor-pointer hover:underline" 
+                                    >
+                                        Forgot password?
+                                    </Link>
                                 </FormItem>
                             )}
                         />
@@ -149,9 +155,17 @@ export default function SigninPage() {
                         <button
                             type="submit"
                             disabled={loader}
-                            className="w-full flex justify-center items-center gap-2 py-3 text-lg font-semibold text-white rounded-xl bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 transition-all duration-300 shadow-md shadow-green-300/50"
+                            className="w-full flex justify-center items-center gap-2 py-3 text-lg font-semibold text-white rounded-xl 
+                                bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 transition-all 
+                                duration-300 shadow-md shadow-green-300/50"
                         >
-                            {loader ? <><Loader2 className="h-5 w-5 animate-spin"/> Please wait</> : "Sign In"}
+                            {
+                                loader ? 
+                                        <>
+                                            <Loader2 className="h-5 w-5 animate-spin"/> Please wait
+                                        </> 
+                                        : "Sign In"
+                            }
                         </button>
                     </form>
 

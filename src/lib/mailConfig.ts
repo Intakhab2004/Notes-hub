@@ -1,14 +1,17 @@
 import { apiResponse } from "@/types/apiResponse";
 import nodemailer from "nodemailer"
 import { otpTemplate } from "@/emails/otpVerification";
+import { resetPasswordTemplate } from "@/emails/resetPassword";
 
 interface mailParams{
     email: string,
-    username: string,
-    otp: string
+    username?: string,
+    otp?: string,
+    mailType?: string,
+    randomUID?: string
 }
 
-export async function sendMail({email, username, otp}: mailParams): Promise<apiResponse> {
+export async function sendMail({email, username, otp, mailType, randomUID}: mailParams): Promise<apiResponse> {
     try{
         const transporter = nodemailer.createTransport({
             service: "gmail",
@@ -21,8 +24,8 @@ export async function sendMail({email, username, otp}: mailParams): Promise<apiR
         const mailOptions = {
             from: `NotesHub ${process.env.MAIL_USER}`,
             to: email,
-            subject: "NotesHub | Verification Code",
-            html: otpTemplate(otp, username)
+            subject: `${mailType === "otpVerification" ? "NotesHub | Verification Code" : "NotesHub | Reset Password"}`,
+            html: mailType === "verifyOtp" ? otpTemplate(otp!, username!) : resetPasswordTemplate(email!, randomUID!)
         }
 
         const response = await transporter.sendMail(mailOptions);

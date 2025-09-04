@@ -115,7 +115,7 @@ export async function POST(request: NextRequest){
         }
 
         // Sending otp through mail
-        const mailResponse = await sendMail({email: email, username: username, otp: otpCode});
+        const mailResponse = await sendMail({email: email, username: username, otp: otpCode, mailType: "verifyOtp"});
         if(!mailResponse.success){
             return NextResponse.json({
                 success: false,
