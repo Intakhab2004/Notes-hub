@@ -14,7 +14,7 @@ import z from "zod";
 
 
 
-const resetPasswordPage = () => {
+const ResetPasswordPage = () => {
     const [loader, setLoader] = useState(false);
     const params = useParams<{id: string}>();
     const router = useRouter();
@@ -190,4 +190,4 @@ const resetPasswordPage = () => {
     )
 }
 
-export default resetPasswordPage;
+export default ResetPasswordPage;

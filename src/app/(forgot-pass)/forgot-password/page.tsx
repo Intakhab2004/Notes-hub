@@ -16,7 +16,7 @@ const requiredSchema = z.object({
                   .min(1, {message: "Email is required"}),
 })
 
-const forgotPasswordPage = () => {
+const ForgotPasswordPage = () => {
     const [loader, setLoader] = useState(false);
 
 
@@ -153,4 +153,4 @@ const forgotPasswordPage = () => {
     )
 }
 
-export default forgotPasswordPage;
+export default ForgotPasswordPage;
