@@ -18,7 +18,7 @@ export const resetPasswordTemplate = (email: string, randomUID: string): string 
             </div>
 
             <div style="margin-top: 20px; margin-bottom: 20px;">
-                <a href="https://notes-hub-eosin.vercel.app/${randomUID}"
+                <a href="https://notes-hub-eosin.vercel.app/set-password/${randomUID}"
                     style="display: inline-block; padding: 10px 20px; background-color: #61dafb; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">
                     Reset Password
                 </a>

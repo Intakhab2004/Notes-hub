@@ -6,7 +6,8 @@ export const middleware = async(request: NextRequest) => {
     const token = await getToken({req: request});
 
     const path = request.nextUrl.pathname;
-    const isPublicPath = (path === "/sign-up") || (path === "/sign-in") || path.startsWith("/verify");
+    const isPublicPath = (path === "/sign-up") || (path === "/sign-in") || path.startsWith("/verify") || (path === "/forgot-password")
+                        || path.startsWith("/set-password");
 
     if(token && isPublicPath){
         return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -27,6 +28,8 @@ export const config = {
         "/dashboard",
         "/upload-notes",
         "/profile",
-        "/update-profile"
+        "/update-profile",
+        "/forgot-password",
+        "/set-password/:path*"
     ]
 }
