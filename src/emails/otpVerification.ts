@@ -27,7 +27,7 @@ export const otpTemplate = (otp: string, username: string): string => {
             </div>
 
             <div style="margin-top: 20px;">
-                <a href="https://true-feedback-livid.vercel.app/verify/${username}"
+                <a href="https://notes-hub-eosin.vercel.app/verify/${username}"
                     style="display: inline-block; padding: 10px 20px; background-color: #61dafb; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">
                     Verify here
                 </a>
