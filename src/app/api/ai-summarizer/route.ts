@@ -1,3 +1,4 @@
+import { chunkTextData } from "@/lib/chunkTextData";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import pdf from "pdf-parse"
@@ -5,7 +6,6 @@ import pdf from "pdf-parse"
 
 export async function POST(request: NextRequest){
     try{
-        console.log("Hellow");
         const {url} = await request.json();
 
         if(!url){
@@ -19,6 +19,7 @@ export async function POST(request: NextRequest){
 
         // Getting the file from cloudinary as arraybuffer.
         const response = await axios.get(url, {responseType: "arraybuffer"});
+
         // Converting the array buffer to nodejs buffer as pdf-parse require nodejs buffer format file type
         const nodeBuffer = Buffer.from(response.data);
 
@@ -26,22 +27,51 @@ export async function POST(request: NextRequest){
         const data = await pdf(nodeBuffer);
         const textData = data.text;
 
+        // Getting the chuncked textData
+        const chunks = chunkTextData(textData);
 
-        const summaryRes = await axios.post(
-            "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
-            {inputs: textData},
-            {headers: {Authorization: `Bearer ${process.env.HF_API_KEY}`}}
+        // Running all the AI api call parallely using Promise.all
+        const summaryPromises = chunks.map(chunk => 
+            axios.post(
+                "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
+                {inputs: chunk},
+                {
+                    headers: {
+                        Authorization: `Bearer ${process.env.HF_API_KEY}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            )
         )
+        const responses = await Promise.all(summaryPromises);
 
-        if(summaryRes.statusText !== "OK"){
+        // extracting summaries of all chunks
+        const chunkSummaries = responses.map(res => res.data[0].summary_text).filter(Boolean);
+
+        // Merging all the chunckSummaries
+        const combinedSummary = chunkSummaries.join(" ");
+        
+        // One more API call for final summary
+        const finalRes = await axios.post(
+            "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
+            { inputs: combinedSummary },
+            {
+                headers: {
+                    Authorization: `Bearer ${process.env.HF_API_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        )
+        
+        if(finalRes.statusText !== "OK"){
             return NextResponse.json({
                 success: false,
                 status: 401,
                 message: "An error occured while API call"
             })
         }
-        
-        const summary = summaryRes.data[0].summary_text;
+        const summary = finalRes.data[0]?.summary_text;
+
         return NextResponse.json({
             success: true,
             status: 200,
