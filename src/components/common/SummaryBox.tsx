@@ -104,7 +104,9 @@ export default function SummaryBox({fileUrl}: {fileUrl: string}){
                         :
                         (
                             <DialogDescription>
-                                {summary}
+                                {
+                                    summary ? summary : "File is too large to summarize"
+                                }
                             </DialogDescription>
                         )
                     }
