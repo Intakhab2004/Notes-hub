@@ -1,4 +1,4 @@
-import { chunkTextData } from "@/lib/chunkTextData";
+import { chunkTextData } from "@/helpers/chunkTextData";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import pdf from "pdf-parse"
