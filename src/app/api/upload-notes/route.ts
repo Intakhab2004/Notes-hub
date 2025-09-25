@@ -119,11 +119,19 @@ export async function POST(request: NextRequest){
 
 
 // Fetching all notes
-export async function GET(){
+export async function GET(req: NextRequest){
     await dbConnect();
 
     try{
+        const { searchParams } = req.nextUrl;
+        const page = Math.max(parseInt(searchParams.get("page") || "1", 10), 1);
+
+        // Total notes count
+        const totalNotes = await notesModel.countDocuments();
+
         const notesResult = await notesModel.find()
+                                                   .skip((page - 1)*12)
+                                                   .limit(12)
                                                    .sort({createdAt: -1})
                                                    .populate({
                                                         path: "uploadedBy",
@@ -141,7 +149,8 @@ export async function GET(){
             success: true,
             status: 200,
             message: "Notes fetched successfully",
-            notesResult
+            notesResult,
+            totalPages: Math.ceil(totalNotes/12),
         })
     }
 

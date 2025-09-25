@@ -6,7 +6,7 @@ import Image from "next/image"
 import img1 from "@/assets/img1.webp"
 import { useEffect, useState } from "react"
 import { Notes } from "@/models/Notes"
-import { Loader2 } from "lucide-react"
+import { ChevronLeftIcon, ChevronRight, Loader2 } from "lucide-react"
 import NoteCard from "@/components/common/NoteCard"
 import { toast } from "sonner"
 import axios from "axios"
@@ -15,12 +15,23 @@ import { useForm } from "react-hook-form"
 import { useDebounceCallback } from "usehooks-ts"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { getPaginationArray } from "@/helpers/pagination"
+import { useSearchParams, useRouter } from "next/navigation"
+
+
 
 
 export default function NotesCollections() {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+
+	const initialPage = parseInt(searchParams.get("page") || "1", 10);
+	const [pageNumber, setPageNumber] = useState(initialPage);
+
 	const [loader, setLoader] = useState(false);
 	const [notes, setNotes] = useState<Notes[]>([]);
 	const [filteredNotes, setFilteredNotes] = useState<Notes[]>([]);
+	const [totalPage, setTotalPage] = useState(1);
 	const [searchInput, setSearchInput] = useState("");
 
 	const debounced = useDebounceCallback(setSearchInput, 500);
@@ -32,17 +43,17 @@ export default function NotesCollections() {
 	});
 
 	useEffect(() => {
-		const getAllNotes = async () => {
+		const fetchNotes = async () => {
 			try {
 				setLoader(true);
-				const result = await axios.get("/api/upload-notes");
+				const result = await axios.get(`/api/upload-notes?page=${pageNumber}`);
 
 				if(!result.data.success){
 					toast.error("Something went wrong while fetching the notes");
 				} 
                 else {
 					setNotes(result.data.notesResult);
-					setFilteredNotes(result.data.notesResult);
+					setTotalPage(result.data.totalPages);
 				}
 			} 
             catch(error: unknown){
@@ -53,8 +64,9 @@ export default function NotesCollections() {
 			}
 		};
 
-		getAllNotes();
-	}, []);
+		fetchNotes();
+	}, [pageNumber]);
+
 
 	useEffect(() => {
 		if (!searchInput.trim()) {
@@ -71,6 +83,13 @@ export default function NotesCollections() {
 
 		setFilteredNotes(result);
 	}, [searchInput, notes]);
+
+	const handlePageChange = (p: number) => {
+		setPageNumber(p);
+		router.push(`/notes-collections?page=${p}`, { scroll: false });
+	}
+
+
 
 	return (
 		<section className="bg-[#FAF9EE] dark:bg-[#0f0f1a] transition-colors duration-500">
@@ -154,6 +173,50 @@ export default function NotesCollections() {
 						    )
                         }
 					</div>
+					
+					{/* Pagination */}
+					{
+						!loader && (
+							<div className="flex items-center justify-center gap-2 mt-10">
+								<button 
+									disabled={pageNumber === 1} 
+									onClick={() => handlePageChange(pageNumber-1)}
+									className="px-1 py-1 cursor-pointer"
+								>
+									<ChevronLeftIcon />
+								</button>
+								<div className="flex gap-2">
+									<div className="flex gap-2">
+										{
+											getPaginationArray(pageNumber, totalPage).map((p, idx) =>
+												typeof p === "number" ? (
+													<button
+														key={idx}
+														onClick={() => handlePageChange(p)}
+														className={`px-3 py-1 rounded cursor-pointer ${pageNumber === p ? "bg-blue-600 text-white scale-90" : "bg-[#cad4efa4] dark:bg-[#34353aa4]"}`}
+													>
+														{p}
+													</button>
+												) 
+												: 
+												(
+													<span key={idx} className="px-2">...</span>
+												)
+											)
+										}
+									</div>
+								</div>
+								<button
+									disabled={pageNumber === totalPage}
+									onClick={() => handlePageChange(pageNumber+1)}
+									className="px-1 py-1 cursor-pointer"
+								>
+									<ChevronRight />
+								</button>
+							</div>
+						)
+					}
+
 				</div>
 			</div>
 
